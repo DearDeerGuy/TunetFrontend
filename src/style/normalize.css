@@ -1,0 +1,35 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body{
+  color: #FFFFFF;
+  font-family: 'Assistant', sans-serif;
+}
+
+a{
+  color: currentColor;
+  text-decoration: none;
+}
+
+button{
+  border: 0px;
+}
+
+:where([fill]:not(
+  [fill="none"],
+  [fill^="url"]
+)) {
+  fill: currentColor;
+}
+:where([stroke]:not(
+  [stroke="none"],
+  [stroke^="url"]
+)) {
+  stroke: currentColor;
+}
+svg * {
+  transition-property: fill, stroke;
+}

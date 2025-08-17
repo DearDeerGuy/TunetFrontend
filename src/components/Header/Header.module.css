@@ -1,0 +1,76 @@
+.Header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0D0C0C80;
+  padding: 30px 100px;
+}
+
+.header_logo{
+  flex-shrink: 0;
+}
+
+.controller_block{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 36px;
+}
+
+.controller_language{
+  display: flex;
+  gap: 14px;
+  cursor: pointer;
+  transition-duration: 0.3s;
+}
+
+.controller_language_text{
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.controller_button{
+  background-color: #F20A0A;
+  text-transform: uppercase;
+  color: currentColor;
+  font-weight: 700;
+  padding: 10px 28px;
+  cursor: pointer;
+  transition-duration: 0.3s;
+}
+
+@media (max-width:1023px){
+  .Header{
+    padding: 20px 50px;
+  }
+}
+
+@media (max-width:767px){
+  .Header{
+    padding: 20px 20px;
+  }
+  .controller_block{
+    gap: 12px;
+  }
+}
+
+@media (max-width:424px){
+  .controller_block{
+    gap: 7px;
+  }
+  .controller_language{
+    gap: 7px;
+  }
+  .header_logo_img{
+    width: 150px;
+  }
+}
+
+@media (hover: hover){
+  .controller_language:hover svg{
+    color:#F20A0A;
+  }
+  .controller_button:hover{
+    background-color: #832727;
+  }
+}
