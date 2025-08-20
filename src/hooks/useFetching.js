@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export const useFetching = (callback, startLoader = true) => {
+const useFetching = (callback, startLoader = true) => {
     const [loader,setLoader] = useState(startLoader);
     const [error,setError] = useState('');
 
@@ -9,7 +9,9 @@ export const useFetching = (callback, startLoader = true) => {
             setLoader(true);
             await callback();
         } catch (e) {
-            setError(e.message);
+            if (e.response?.data?.errors) {
+                setError(e.response.data.errors);
+            }
         }finally{
             setLoader(false);
         }
@@ -17,3 +19,5 @@ export const useFetching = (callback, startLoader = true) => {
 
     return [fetching,loader,error];
 }
+
+export default useFetching;

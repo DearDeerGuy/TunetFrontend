@@ -41,6 +41,10 @@
   border-radius: 4px;
 }
 
+.loginForm_error{
+  color: red;
+}
+
 .loginForm_actions{
   display: flex;
   flex-direction: column;

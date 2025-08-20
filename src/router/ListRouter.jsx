@@ -12,3 +12,8 @@ export const ListUser = [
     {id:3,path:"/registration",element:<Form><Registration/></Form>},
     {id:4,path:"/changePassword",element:<Form><ChangePassword/></Form>},
 ]
+
+export const ListAuthorizedUser = [
+    {id:0,path:"*",element:<Navigate to={"/main"} replace />},
+    {id:1,path:"/main",element:<Main/>},
+]

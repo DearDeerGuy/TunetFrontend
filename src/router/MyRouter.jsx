@@ -1,11 +1,16 @@
 import React from 'react'
-import { ListUser } from './listRouter'
+import { ListAuthorizedUser, ListUser } from './listRouter'
 import { Route, Routes } from 'react-router'
+import { useSelector } from 'react-redux'
 
 function MyRouter() {
+    const user=useSelector(state=>state.User)
     return (
         <Routes>
-            {ListUser.map(val=> <Route key={val.id} path={val.path} element={val.element}/>)}
+            {user.token?
+                ListAuthorizedUser.map(val=> <Route key={val.id} path={val.path} element={val.element}/>)
+                :ListUser.map(val=> <Route key={val.id} path={val.path} element={val.element}/>)
+            }
         </Routes>
     )
 }
