@@ -7,6 +7,7 @@
 body{
   color: #FFFFFF;
   font-family: 'Assistant', sans-serif;
+  overflow-x: hidden;
 }
 
 a{

@@ -1,11 +1,12 @@
 import React from 'react'
-import { createBrowserRouter, RouterProvider } from 'react-router'
 import { ListUser } from './listRouter'
+import { Route, Routes } from 'react-router'
 
 function MyRouter() {
-    const router = createBrowserRouter(ListUser)
     return (
-        <RouterProvider router={router} />
+        <Routes>
+            {ListUser.map(val=> <Route key={val.id} path={val.path} element={val.element}/>)}
+        </Routes>
     )
 }
 

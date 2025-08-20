@@ -9,7 +9,9 @@ function Form({children}) {
             <img className={classes.backdrop_img} src={baner} alt="" />
             <div className={classes.backdrop_overlay}></div>
         </div>
-        {children}
+        <div className={classes.form_body}>
+            {children}
+        </div>
     </div>
   )
 }

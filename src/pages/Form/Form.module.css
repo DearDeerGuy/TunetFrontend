@@ -1,23 +1,29 @@
-.form{
+.form {
   position: relative;
   width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
 }
 
-.backdrop{
+.backdrop {
   position: fixed;
   inset: 0;
+  z-index: 0;
 }
 
-.backdrop_img{
+.backdrop_img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.backdrop_overlay{
+.backdrop_overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+}
+
+.form_body {
+  position: relative; 
+  z-index: 2;
 }

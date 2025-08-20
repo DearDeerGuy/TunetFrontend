@@ -1,13 +1,14 @@
 import React from 'react'
 import logo from "../../assets/logo.png";
 import classes from './Header.module.css';
+import { Link } from 'react-router';
 
 function Header() {
   return (
     <div className={classes.Header}>
-        <a href="" className={classes.header_logo}>
+        <Link className={classes.header_logo} to="/main">
             <img className={classes.header_logo_img} src={logo} alt="" width={180}/> 
-        </a>
+        </Link>
         <div className={classes.controller_block}>
             <div className={classes.controller_language}>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -15,7 +16,7 @@ function Header() {
                 </svg>
                 <div className={classes.controller_language_text}>Ua</div>
             </div>
-            <button className={classes.controller_button}>УВІЙТИ</button>
+            <Link className={classes.controller_button} to="/authorization">УВІЙТИ</Link>
         </div>
     </div>
     
