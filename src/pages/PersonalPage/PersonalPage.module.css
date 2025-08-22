@@ -1,0 +1,234 @@
+.personal{
+  padding: 110px 20px 100px;
+  width: 100vw;
+  min-height: 100vh;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.personal_form{
+  display: flex;
+  column-gap: 20px;
+  padding: 60px 90px 80px 120px;
+  max-width: 1520px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.personal_profile{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 80px;
+  max-width: 420px;
+  width: 100%;
+}
+
+.personal_avatarBlock{
+  max-width: 220px;
+  min-width: 120px;
+  max-height: 220px;
+  min-height: 120px;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.personal_avatar{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.personal_fileInput{
+  display: none;
+}
+
+.personal_tariff{
+  display: flex;
+  flex-direction: column;
+  row-gap: 28px;
+  padding: 20px;
+  width: 100%;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.tariff_title{
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.tariff_name{
+  font-size: 24px;
+  font-weight: 600;
+  color: #F20A0A;
+}
+
+.tariff_info{
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.tariff_date{
+  font-size: 16px;
+  font-weight: 400;
+  padding-bottom: 18px;
+}
+
+.tariff_button{
+  padding: 11px;
+  border: 2px solid currentColor;
+  border-radius: 38px;
+  max-width: 380px;
+  width: 100%;
+  background-color: #ffffff;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.formGroup{
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  width: 100%;
+}
+
+.formGroup_label{
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.formGroup_input{
+  padding: 16px;
+  width: 100%;
+  font-size: 24px;
+  border: 0px;
+  border-radius: 4px;
+}
+
+.formGroup_error{
+  color: red;
+}
+
+.personal_details {
+  display: grid;
+  align-content: start;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 72px;  
+  column-gap: 64px;
+  width: 100%;
+}
+
+.personal_details > .formGroup:first-child {
+  grid-column: 1 / -1;
+}
+
+.personal_button{
+  padding: 17px;
+  border: 2px solid currentColor;
+  border-radius: 38px;
+  margin: auto;
+  max-width: 324px;
+  width: 100%;
+  background-color: #ffffff;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+@media (max-width:1600px){
+  .personal_form{
+    padding: 60px;
+  }
+}
+
+@media (max-width:1200px){
+  .personal_details{
+    grid-template-columns:1fr;
+    row-gap: 30px;
+  }
+}
+
+@media (max-width:1023px){
+  .personal{
+    padding: 110px 20px 145px;
+  }
+}
+
+@media (max-width:767px){
+  .personal{
+    padding: 110px 20px 145px;
+  }
+  .personal_form{
+    flex-direction: column;
+    gap: 64px;
+  }
+  .personal_tariff{
+    gap: 14px;
+  }
+  .tariff_date{
+    padding: 0px;
+  }
+  .tariff_button{
+    margin: auto;
+  }
+  .formGroup_input{
+    padding: 7px;
+  }
+  .personal_profile{
+    max-width: 1000px;
+    gap: 40px;
+  }
+}
+
+@media (max-width:424px){
+  .personal{
+    padding: 90px 20px 145px;
+  }
+  .personal_form{
+    padding: 20px 40px 52px;
+    gap: 40px;
+  }
+  .personal_avatarBlock{
+    max-width: 120px;
+    max-height: 120px;
+  }
+  .tariff_button{
+    border-width: 1px;
+    border-radius: 8px;
+    font-size: 20px;
+  }
+  .formGroup{
+    row-gap: 10px;
+  }
+  .personal_button{
+    padding: 5px 40px;
+    width: auto;
+    border-width: 1px;
+    background-color: transparent;
+    color: currentColor;
+    border-radius: 8px;
+    font-size: 20px;
+  }
+}
+
+@media (hover: hover){
+  .tariff_button:hover{
+    border-color: #F20A0A;
+    background-color: #e7e7e7;
+  }
+  .personal_button:hover{
+    border-color: #F20A0A;
+    background-color: #e7e7e7;
+  }
+}

@@ -5,6 +5,9 @@ const initialState = {
     token:'',
     name:'',
     email:'',
+    dateOfBirth:'',
+    avatar:null,
+    admin_lvl:0,
 }
 
 const userSlice = createSlice({

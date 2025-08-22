@@ -2,11 +2,10 @@ import React from 'react'
 import logo from "../../assets/logo.png";
 import classes from './Header.module.css';
 import { Link } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import { clearUser } from '../../redux/slice/userSlice';
+import { useSelector } from 'react-redux';
+import defaultAvatar from './../../assets/avatar.jpg'
 
 function Header() {
-    const dispatch = useDispatch();
     const user = useSelector(state => state.User);
     return (
         <div className={classes.Header}>
@@ -22,7 +21,9 @@ function Header() {
                 </div>
                 {
                     user.token?(
-                        <button className={classes.controller_button} onClick={()=>{dispatch(clearUser())}}>ВИЙТИ</button>
+                        <Link className={classes.controller_avatar} to="/personal">
+                            <img className={classes.controller_avatarImg} src={user.avatar||defaultAvatar} alt=""/>
+                        </Link>
                     ):(
                         <Link className={classes.controller_button} to="/authorization">УВІЙТИ</Link>
                     )

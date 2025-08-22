@@ -1,7 +1,8 @@
 .regBlock{
-  padding: 20px;
+  padding: 100px 20px 20px;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -37,7 +38,7 @@
 }
 
 .regForm_input{
-  padding: 5px;
+  padding: 16px;
   font-size: 24px;
   border: 0px;
   border-radius: 4px;
@@ -48,8 +49,11 @@
 }
 
 .regForm_button{
-  padding: 16px 40px 16px 40px;
+  padding: 16px;
+  width: 100%;
+  max-width: 324px;
   background-color: #ffffff;
+  border: 2px solid currentColor;
   border-radius: 100px;
   font-size: 24px;
   font-weight: 400;
@@ -61,11 +65,17 @@
     padding: 50px;
     row-gap: 25px;
   }
+  .regForm_input{
+    width: 100%;
+  }
 }
 
 @media (max-width:767px){
   .regForm{
     padding: 30px 20px;
+  }
+  .regForm_input{
+    padding: 7px;
   }
 }
 
@@ -80,6 +90,7 @@
 
 @media (hover: hover){
   .regForm_button:hover{
-    background-color: #d3d3d3;
+    border-color: #F20A0A;
+    background-color: #e7e7e7;
   }
 }

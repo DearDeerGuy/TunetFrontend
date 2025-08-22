@@ -32,8 +32,6 @@ function Authorization() {
     }
 
     useEffect(()=>{
-        console.log(error);
-    
         setErrorFields({email:error?.email?.[0]||'',password:error?.password?.[0]||''})
     },[error])
 
