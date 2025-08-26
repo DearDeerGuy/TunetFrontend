@@ -5,6 +5,7 @@ import useFetching from '../../hooks/useFetching';
 import { useDispatch } from 'react-redux';
 import { login } from '../../API/user';
 import { saveUser } from '../../redux/slice/userSlice';
+import { activateImageULR } from '../../Utils/utils';
 
 function Authorization() {
     const dispatch=useDispatch()
@@ -12,17 +13,27 @@ function Authorization() {
     const [errorFields,setErrorFields] = useState({email:'',password:''})
     const [fetching,loader,error] = useFetching(async()=>{
         const res = await login(User);
-        dispatch(saveUser({id:res.user.id,token:res.access_token,name:res.user.name,email:res.user.email}))
+        dispatch(saveUser({
+            id:res.user.id,
+            token:res.access_token,
+            name:res.user.name,
+            email:res.user.email,
+            dateOfBirth:res.user.date_of_birth,
+            avatar:activateImageULR(res.user.avatar),
+            adminLvl:res.user.admin_lvl,
+            tariffId:res.user.tariff_id,
+            tariffEndDate:res.user.tariff_end_date,
+        }))
     },false)
 
     function loginButton(){
         let errorFront=0;
         if(User.email === undefined || User.email === null || User.email.trim() === ''){
-            setErrorFields(val=>({...val,email:'The email field is required'}));
+            setErrorFields(val=>({...val,email:"Поле електронної пошти обов'язкове для заповнення"}));
             errorFront++;
         }
         if(User.password.length<6){
-            setErrorFields(val=>({...val,password:'Password must be greater than or equal to 6 characters'}));
+            setErrorFields(val=>({...val,password:'Пароль має бути більше або дорівнювати 6 символам'}));
             errorFront++;
         }
 

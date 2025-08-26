@@ -3,7 +3,10 @@ import defaultAvatar from './../../assets/avatar.jpg'
 import classes from './PersonalPage.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router';
-import { clearUser } from '../../redux/slice/userSlice';
+import { clearUser, saveUser } from '../../redux/slice/userSlice';
+import useFetching from '../../hooks/useFetching';
+import { update } from '../../API/user';
+import { activateImageULR } from '../../Utils/utils';
 
 function PersonalPage() {
     const dispatch = useDispatch()
@@ -15,7 +18,24 @@ function PersonalPage() {
         email:user.email,
         dateOfBirth:user.dateOfBirth,
         avatar:user.avatar,
+        avatarFile:null,
     });
+    const [fetching,loader,error] = useFetching(async()=>{
+        const res = await update({...newUser,token:user.token});
+        console.log(res);
+        dispatch(saveUser({
+            id:res.user.id,
+            token:user.token,
+            name:res.user.name,
+            email:res.user.email,
+            dateOfBirth:res.user.date_of_birth,
+            avatar:activateImageULR(res.user.avatar),
+            adminLvl:res.user.admin_lvl,
+            tariffId:res.user.tariff_id,
+            tariffEndDate:res.user.tariff_end_date,
+        }))
+        setNewUser((s)=>({...s,avatarFile:null}))
+    })
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -34,8 +54,24 @@ function PersonalPage() {
         }
 
         const imageUrl = URL.createObjectURL(file);
-        setNewUser((val) => ({ ...val, avatar: imageUrl }));
+        setNewUser((val) => ({ ...val, avatar: imageUrl,avatarFile: file}));
     };
+
+    const updateButton = () => {
+        let errorFront=0;
+        if(newUser.name === undefined || newUser.name === null || newUser.name.trim() === ''){
+            setErrorFields(val=>({...val,name:"Поле імені обов'язкове для заповнення"}));
+            errorFront++;
+        }
+        if(newUser.email === undefined || newUser.email === null || newUser.email.trim() === ''){
+            setErrorFields(val=>({...val,email:"Поле електронної пошти обов'язкове для заповнення"}));
+            errorFront++;
+        }
+
+        if(errorFront==0){
+            fetching();
+        }
+    }
 
     return (
         <div className={classes.personal}>
@@ -69,7 +105,7 @@ function PersonalPage() {
                         <input className={classes.formGroup_input} type="date" id='dateOfBirth' value={newUser.dateOfBirth} onChange={e=>{setNewUser(user=>({...user,dateOfBirth:e.target.value}));setErrorFields(val=>({...val,dateOfBirth:''}))}}/>
                         {errorFields.dateOfBirth && <p className={classes.formGroup_error}>{errorFields.dateOfBirth}</p>}
                     </div>
-                    <button type='button' className={classes.personal_button}>Зберегти зміни</button>
+                    <button type='button' className={classes.personal_button} onClick={updateButton}>Зберегти зміни</button>
                     <button type='button' className={classes.personal_button} onClick={()=>{dispatch(clearUser())}}>Вийти</button>
                 </div>
             </form>

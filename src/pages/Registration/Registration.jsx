@@ -17,19 +17,19 @@ function Registration() {
     function registerButton(){
         let errorFront=0;
         if(User.name === undefined || User.name === null || User.name.trim() === ''){
-            setErrorFields(val=>({...val,name:'The name field is required'}));
+            setErrorFields(val=>({...val,name:"Поле імені обов'язкове для заповнення"}));
             errorFront++;
         }
         if(User.email === undefined || User.email === null || User.email.trim() === ''){
-            setErrorFields(val=>({...val,email:'The email field is required'}));
+            setErrorFields(val=>({...val,email:"Поле електронної пошти обов'язкове для заповнення"}));
             errorFront++;
         }
         if(User.password.length<6){
-            setErrorFields(val=>({...val,password:'Password must be greater than or equal to 6 characters'}));
+            setErrorFields(val=>({...val,password:'Пароль має бути більше або дорівнювати 6 символам'}));
             errorFront++;
         }
         if(User.password!==User.repeatPassword){
-            setErrorFields(val=>({...val,repeatPassword:'You repeated the password incorrectly'}));
+            setErrorFields(val=>({...val,repeatPassword:'Ви неправильно повторили пароль'}));
             errorFront++;
         }
 
