@@ -17,16 +17,7 @@ const userSlice = createSlice({
     initialState,
     reducers:{
         saveUser(state,action){
-            const user = action.payload;
-            state.id = user?.id ?? state.id;
-            state.token = user?.token ?? state.token;
-            state.name = user?.name ?? state.name;
-            state.email = user?.email ?? state.email;
-            state.dateOfBirth = user?.dateOfBirth ?? state.dateOfBirth;
-            state.avatar = user?.avatar ?? state.avatar;
-            state.adminLvl = user?.adminLvl ?? state.adminLvl;
-            state.tariffId = user?.tariffId ?? state.tariffId;
-            state.tariffEndDate = user?.tariffEndDate ?? state.tariffEndDate;
+            return { ...state, ...action.payload };
         },
         clearUser() {
             return initialState

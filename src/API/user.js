@@ -40,3 +40,8 @@ export const update = async ({token,name,email,dateOfBirth,avatarFile}) => {
     })
     return response.data;
 }
+
+export const getUser = async (id) =>{
+    const response = await axios.post(`http://localhost:80${dopPatch}/api/user/${id}`)
+    return response.data;
+}

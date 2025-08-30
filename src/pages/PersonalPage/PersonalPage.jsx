@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import defaultAvatar from './../../assets/avatar.jpg'
 import classes from './PersonalPage.module.css'
 import { useDispatch, useSelector } from 'react-redux'
@@ -7,12 +7,15 @@ import { clearUser, saveUser } from '../../redux/slice/userSlice';
 import useFetching from '../../hooks/useFetching';
 import { update } from '../../API/user';
 import { activateImageULR } from '../../Utils/utils';
+import Loader from '../../components/UI/Loader/Loader';
+import { getTariffId } from '../../API/tariff';
 
 function PersonalPage() {
     const dispatch = useDispatch()
     const fileInputRef = useRef();
     const user = useSelector(state => state.User);
     const [errorFields,setErrorFields] = useState({name:'',email:'',dateOfBirth:''})
+    const [tariff,setTariff] = useState({id:'',name:'',description:'',})
     const [newUser,setNewUser] = useState({
         name:user.name,
         email:user.email,
@@ -35,7 +38,11 @@ function PersonalPage() {
             tariffEndDate:res.user.tariff_end_date,
         }))
         setNewUser((s)=>({...s,avatarFile:null}))
-    })
+    },false)
+    const [fetchingTariff,loaderTariff,errorTariff] = useFetching(async()=>{
+        const res = await getTariffId(user.tariffId);
+        setTariff(res);
+    },true)
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -73,6 +80,13 @@ function PersonalPage() {
         }
     }
 
+    useEffect(()=>{
+        fetchingTariff();
+    },[])
+    useEffect(()=>{
+        setErrorFields({email:error?.email?.[0]||'',password:error?.password?.[0]||'',dateOfBirth:error?.date_of_birth?.[0]||''})
+    },[error])
+
     return (
         <div className={classes.personal}>
             <form className={classes.personal_form}>
@@ -83,10 +97,16 @@ function PersonalPage() {
                     </div>
                     <div className={classes.personal_tariff}>
                         <h1 className={classes.tariff_title}>Твій тариф</h1>
-                        <h2 className={classes.tariff_name}>Family</h2>
-                        <div className={classes.tariff_info}>10 000 фільмів та серіалів</div>
-                        <div className={classes.tariff_date}>Закінчиться 1 жовтня 2025</div>
-                        <Link className={classes.tariff_button} to='/main'>Змінити тариф</Link>
+                        {loaderTariff?<>
+                        <div className={classes.personal_tariffLoader}>
+                            <Loader/>
+                        </div>
+                        </>:<>
+                        <h2 className={classes.tariff_name}>{tariff.name}</h2>
+                        <div className={classes.tariff_info}>{tariff.description}</div>
+                        <div className={classes.tariff_date}>Закінчиться {user.tariffEndDate}</div>
+                        </>}
+                        <Link className={classes.tariff_button} to='/tariffs'>Змінити тариф</Link>
                     </div>
                 </div>
                 <div className={classes.personal_details}>
@@ -105,8 +125,13 @@ function PersonalPage() {
                         <input className={classes.formGroup_input} type="date" id='dateOfBirth' value={newUser.dateOfBirth} onChange={e=>{setNewUser(user=>({...user,dateOfBirth:e.target.value}));setErrorFields(val=>({...val,dateOfBirth:''}))}}/>
                         {errorFields.dateOfBirth && <p className={classes.formGroup_error}>{errorFields.dateOfBirth}</p>}
                     </div>
-                    <button type='button' className={classes.personal_button} onClick={updateButton}>Зберегти зміни</button>
+                    <button type='button' className={classes.personal_button} onClick={updateButton} disabled={loader} >Зберегти зміни</button>
                     <button type='button' className={classes.personal_button} onClick={()=>{dispatch(clearUser())}}>Вийти</button>
+                    {loader&&
+                    <div className={classes.personal_loader}>
+                        <Loader/>
+                    </div>
+                    }
                 </div>
             </form>
         </div>

@@ -4,14 +4,15 @@ const useFetching = (callback, startLoader = true) => {
     const [loader,setLoader] = useState(startLoader);
     const [error,setError] = useState('');
 
-    const fetching = async () => {
+    const fetching = async (...arr) => {
         try {
             setLoader(true);
-            await callback();
+            await callback(...arr);
         } catch (e) {
             if (e.response?.data?.errors) {
                 setError(e.response.data.errors);
             }
+            console.error(e);
         }finally{
             setLoader(false);
         }

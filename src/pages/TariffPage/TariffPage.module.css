@@ -1,0 +1,58 @@
+.tariffPage{
+  padding: 110px 20px 130px;
+  width: 100vw;
+  min-height: 100vh;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tariffPage_form{
+  display: grid;
+  align-content: start;
+  row-gap: 20px;
+  grid-template-columns: 1fr 1fr;;
+  column-gap: 20px;
+  padding: 60px 60px 60px 60px;
+  max-width: 1400px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.tariffPage_title{
+  text-align: center;
+  text-transform: uppercase;
+  grid-column: 1 / -1;
+}
+
+.tariffPage_loader{
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width:1023px){
+  .tariffPage_form{
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width:767px){
+  .tariffPage_form{
+    padding: 0px;
+    background-color: transparent;
+  }
+}
+
+@media (max-width:424px){
+  .tariffPage{
+    padding-bottom: 150px;
+  }
+  .tariffPage_title{
+    display: none;
+  }
+}

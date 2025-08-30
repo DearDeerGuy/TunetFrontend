@@ -1,0 +1,95 @@
+.tariff{
+  display: flex;
+  gap: 20px;
+  padding: 10px 20px;
+  background-color: #00000080;
+  border-radius: 8px;
+}
+
+.tariffActive{
+  box-shadow: 0px 0px 5px 5px #689b46;
+}
+
+.tariff_image{
+  max-width: 300px;
+  max-height: 400px;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.tariff_body{
+  display: flex;
+  flex-direction: column;
+  row-gap: 35px;
+  height: 100%;
+}
+
+.tariff_title{
+  font-size: clamp(24px, 1.67vw, 32px);
+  font-weight: 700;
+  text-align: center;
+}
+
+.tariff_description{
+  font-size: clamp(16px, 1.04vw, 20px);
+  font-weight: 400;
+}
+
+.tariff_price{
+  font-size: 24px;
+  font-weight: 700;
+  color: red;
+}
+
+.tariff_months{
+  font-size: 14px;
+  font-weight: 700;
+  color: rgb(201, 201, 201);
+}
+
+.tariff_info{
+  margin-top: auto;
+}
+
+.tariff_button{
+  padding: 5px 30px;
+  margin-inline: auto;
+  border: 2px solid currentColor;
+  border-radius: 12px;
+  background-color: transparent;
+  color: currentColor;
+  font-size: 24px;
+  font-weight: 700;
+  cursor:pointer;
+}
+
+@media (max-width:1600px){
+  .tariff_image{
+    max-width: 225px;
+    max-height: 300px;
+  }
+  .tariff_body{
+    row-gap: 20px;
+  }
+  .tariff_price{
+    font-size: 20px;
+  }
+}
+
+@media (max-width:500px){
+  .tariff{
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (hover: hover){
+  .tariff_button:hover{
+    border-color: #F20A0A;
+    background-color: #e7e7e7;
+    color: black;
+  }
+}

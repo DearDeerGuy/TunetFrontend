@@ -1,0 +1,13 @@
+.loader{
+  border: 15px dotted #8E44AD;
+  border-radius: 50%;
+  max-width: 150px;
+  width: 100%;
+  aspect-ratio: 1;
+  animation: spin 5s linear infinite;
+}
+
+@keyframes spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
