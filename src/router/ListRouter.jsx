@@ -6,6 +6,8 @@ import Registration from "../pages/Registration/Registration.jsx";
 import ChangePassword from "../pages/ChangePassword/ChangePassword.jsx";
 import PersonalPage from "../pages/PersonalPage/PersonalPage.jsx";
 import TariffPage from "../pages/TariffPage/TariffPage.jsx";
+import AdminPanelPage from "../pages/AdminPanelPage/AdminPanelPage.jsx";
+import AddChangeMovie from "../pages/AddChangeMovie/AddChangeMovie.jsx";
 
 export const ListUser = [
     {id:0,path:"*",element:<Navigate to={"/main"} replace />},
@@ -20,4 +22,7 @@ export const ListAuthorizedUser = [
     {id:1,path:"/main",element:<Main/>},
     {id:2,path:"/personal",element:<Form><PersonalPage/></Form>},
     {id:3,path:"/tariffs",element:<Form><TariffPage/></Form>},
+    {id:4,path:"/adminPanel",element:<Form><AdminPanelPage/></Form>},
+    {id:5,path:"/addMovie",element:<Form><AddChangeMovie/></Form>},
+    {id:6,path:"/changeMovie/:id",element:<Form><AddChangeMovie/></Form>},
 ]

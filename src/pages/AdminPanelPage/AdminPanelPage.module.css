@@ -1,0 +1,92 @@
+.adminPanel{
+  padding: 110px 20px 100px;
+  width: 100vw;
+  min-height: 100vh;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.adminPanel_form{
+  display: flex;
+  align-items: stretch;
+  max-width: 1720px;
+  min-height: 650px;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.adminPanel_action{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  padding: 25px 40px;
+  max-width: 300px;
+  background-color: #F20A0A;
+}
+
+.adminPanel_actionTitle{
+  text-align: center;
+}
+
+.adminPanel_actionButton{
+  padding: 10px 5px;
+  max-width: 300px;
+  width: 100%;
+  border: 2px solid #ffffff;
+  border-radius: 8px;
+  background-color: #ffffff;
+  font-weight: 900;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.adminPanel_body{
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+  padding: 10px 100px 75px;
+  flex:1;
+  cursor: pointer;
+}
+
+.adminPanel_search{
+  display: flex;
+
+  width: 100%;
+  border-radius: 8px;
+}
+
+.adminPanel_searchInput{
+  flex: 1;
+  padding: 5px 20px;
+  border: 0px;
+  border-right: none;
+  border-radius: 20px 0 0 20px;
+  font-size: 24px;
+  width: 100%;
+  outline: none;
+}
+
+.adminPanel_searchButton{
+  padding: 5px 20px;
+  border-radius: 0 20px 20px 0;
+  background-color: #d4d4d4;
+  color: #000000;
+  cursor: pointer;
+}
+
+@media (hover: hover){
+  .adminPanel_actionButton:hover{
+    border-color: #000000;
+    background-color: #e7e7e7;
+  }
+  .adminPanel_searchButton:hover{
+    background-color: #7e7e7e;
+    color: #ffffff;
+  }
+}
