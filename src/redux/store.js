@@ -6,7 +6,7 @@ const store = configureStore({
     reducer: {
         User:userReducer
     },
-    middleware:(getDefaultMiddleware)=>[...getDefaultMiddleware(),userToLocalStorage]
+    // middleware:(getDefaultMiddleware)=>[...getDefaultMiddleware(),userToLocalStorage]
 })
 
 export default store;

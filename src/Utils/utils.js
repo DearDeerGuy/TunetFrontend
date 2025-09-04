@@ -1,10 +1,13 @@
 export const dopPatch = '/Tunet/public';
 
 export const activateImageULR = (url) => {
-    if(url===null){
-        return null;
+    if (!url) return null;
+    
+    try {
+        let u = new URL(url);
+        let newUrl = `${u.origin}${dopPatch}${u.pathname}`;
+        return newUrl;
+    } catch (e) {
+        return `http://localhost/${dopPatch}/${url}`;
     }
-    let u = new URL(url);
-    let newUrl = `${u.origin}${dopPatch}${u.pathname}`;
-    return newUrl;
 }

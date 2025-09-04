@@ -48,15 +48,13 @@
 .adminPanel_body{
   display: flex;
   flex-direction: column;
-  row-gap: 5px;
-  padding: 10px 100px 75px;
+  row-gap: 10px;
+  padding: 25px 35px;
   flex:1;
-  cursor: pointer;
 }
 
 .adminPanel_search{
   display: flex;
-
   width: 100%;
   border-radius: 8px;
 }
@@ -80,6 +78,134 @@
   cursor: pointer;
 }
 
+.adminPanel_films{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content:center;
+  gap: 20px;
+}
+
+.filmItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 240px;
+  cursor: pointer;
+  background-color: #00000080;
+}
+
+.filmItemActive{
+  box-shadow: 0px 0px 5px 2px #F20A0A;
+}
+
+.filmItem_img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+.filmItem_title {
+  padding: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  color: currentColor;
+  white-space: nowrap;
+  overflow-x: auto;
+  width: 100%;
+  scrollbar-width: none;
+  -ms-overflow-style: none; 
+}
+.filmItem_title::-webkit-scrollbar {
+  display: none;
+}
+
+.adminPanel_controller{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.adminController {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 12px;
+  background: #1e1e1e;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.adminController_loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.adminController_head {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.adminController_select {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #444;
+  background: #2a2a2a;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+}
+
+.adminController_body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.adminController_info {
+  font-size: 14px;
+  padding: 10px;
+  background: #2a2a2a;
+  border-radius: 8px;
+  border: 1px solid #444;
+  word-break: break-all;
+}
+
+.adminController_action {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.adminController_button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #fff;
+  background-color: #007acc;
+}
+
+.adminController_input {
+  display: none;
+}
+
 @media (hover: hover){
   .adminPanel_actionButton:hover{
     border-color: #000000;
@@ -88,5 +214,11 @@
   .adminPanel_searchButton:hover{
     background-color: #7e7e7e;
     color: #ffffff;
+  }
+  .adminController_select:hover {
+    border-color: #666;
+  }
+  .adminController_button:hover {
+    background: #005791;
   }
 }

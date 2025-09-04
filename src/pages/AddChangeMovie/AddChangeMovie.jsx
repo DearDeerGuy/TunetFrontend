@@ -1,30 +1,20 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import classes from './AddChangeMovie.module.css'
-import { Link, useParams } from 'react-router';
+import { Link, useNavigate, useParams } from 'react-router';
 import useFetching from '../../hooks/useFetching';
+import { getCategory } from '../../API/category';
+import { addMovie, getMovieById, updateMovie } from '../../API/film';
+import Loader from '../../components/UI/Loader/Loader';
+import { useSelector } from 'react-redux';
+import { activateImageULR } from '../../Utils/utils';
 
 function AddChangeMovie() {
-    const categories = [
-        { id: 1, category: "Драма" },
-        { id: 2, category: "Комедія" },
-        { id: 3, category: "Жахи" },
-        { id: 4, category: "Фантастика" },
-        { id: 5, category: "Фентезі" },
-        { id: 6, category: "Бойовик" },
-        { id: 7, category: "Детектив" },
-        { id: 8, category: "Романтика" },
-        { id: 9, category: "Трилер" },
-        { id: 10, category: "Історичний" },
-        { id: 11, category: "Сімейний" },
-        { id: 12, category: "Документальний" },
-        { id: 13, category: "Мюзикл" },
-        { id: 14, category: "Дитячий" },
-        { id: 15, category: "Пригоди" },
-    ];
-
     const types = [{id:0,type:'film'},{id:1,type:'serial'}]
+    const navigate = useNavigate();
+    const user = useSelector(state => state.User);
     const {id} = useParams();
     const fileInputRef = useRef()
+    const [categories, setCategories] = useState([])
     const [errorFields, setErrorFields] = useState({
         poster:'',
         title:'',
@@ -48,9 +38,49 @@ function AddChangeMovie() {
         country:'',
         category:[],
     });
-    const [fetchingAdd,loaderAdd,errorAdd] = useFetching(async()=>{
-
+    const [fetchingCategory,loaderCategory,errorCategory] = useFetching( async() => {
+        const res = await getCategory();
+        setCategories(res);
+    }, true)
+    const [fetchingFilm,loaderFilm,errorFilm] = useFetching(async()=>{
+        const res = await getMovieById(id);
+        setMovie({
+            poster:activateImageULR(res.poster),
+            posterFile:null,
+            title:res.title,
+            description:res.description,
+            release_date:res.release_date,
+            type:res.type,
+            actors:res.actors,
+            producer:res.producer,
+            country:res.country,
+            category:res.categories.map(val => val.id),
+        })
+    },id!=undefined);
+    const [fetchingLoad,loaderLoad,errorLoad] = useFetching(async()=>{
+        if(id!=null&&id!=undefined){
+            await updateMovie(id,movie,user.token)
+        }else{
+            await addMovie(movie,user.token);
+        }
+        navigate('/adminPanel');
     },false);
+
+    const isValid = () => {
+        let errorFront=0;
+        if (movie.poster === '' && posterFile === null) { errorFront++; setErrorFields(v => ({ ...v, poster: "Ви повинні завантажити постер" })); }
+        if (!movie.title || movie.title.trim() === '') { errorFront++; setErrorFields(v => ({ ...v, title: "Ви повинні ввести назву" })); }
+        if (!movie.description || movie.description.trim() === '') { errorFront++; setErrorFields(v => ({ ...v, description: "Ви повинні ввести опис" })); }
+        if (!movie.release_date || movie.release_date.trim() === '') { errorFront++; setErrorFields(v => ({ ...v, release_date: "Ви повинні вибрати дату релізу" })); }
+        if (!movie.type || movie.type.trim() === '') { errorFront++; setErrorFields(v => ({ ...v, type: "Ви повинні вибрати тип" })); }
+        if (!movie.actors || movie.actors.trim() === '') { errorFront++; setErrorFields(v => ({ ...v, actors: "Ви повинні вказати акторів" })); }
+        if (!movie.producer || movie.producer.trim() === '') { errorFront++; setErrorFields(v => ({ ...v, producer: "Ви повинні вказати режисера" })); }
+        if (!movie.country || movie.country.trim() === '') { errorFront++; setErrorFields(v => ({ ...v, country: "Ви повинні вказати країну" })); }
+        if (!movie.category || movie.category.length === 0) { errorFront++; setErrorFields(v => ({ ...v, category: "Ви повинні вибрати хоча б одну категорію" })); }
+        if(errorFront==0){
+            fetchingLoad();
+        }
+    }
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -69,10 +99,34 @@ function AddChangeMovie() {
         setMovie((val) => ({ ...val, poster: imageUrl,posterFile: file}));
     };
 
+    useEffect(()=>{
+        fetchingCategory();
+    },[])
+    useEffect(()=>{
+        if(id!=undefined){
+            fetchingFilm();
+        }
+    },[id])
+
+    useEffect(()=>{
+        setErrorFields({
+            title: errorLoad?.title?.[0] || '',
+            description: errorLoad?.description?.[0] || '',
+            release_date: errorLoad?.release_date?.[0] || '',
+            type: errorLoad?.type?.[0] || '',
+            actors: errorLoad?.actors?.[0] || '',
+            producer: errorLoad?.producer?.[0] || '',
+            country: errorLoad?.country?.[0] || '',
+            poster: errorLoad?.poster?.[0] || '',
+            category: errorLoad?.category?.[0] || ''
+        });
+    },[errorLoad])
+
     return (
         <div className={classes.AddChangeMovie}>
             <form className={classes.AddChangeMovie_form} onSubmit={(e)=>e.preventDefault()}>
-                <h1>{id?'Змінити':'Створити'}</h1>
+                <h1>{id!=undefined?'Змінити':'Створити'}</h1>
+                {loaderFilm&&<div className={classes.AddChangeMovie_loader}><Loader/></div>}
                 <div className={classes.formGroupImg} onClick={()=>{fileInputRef.current.click()}}>
                     <div className={classes.formGroup_blockImg}>
                         {movie.poster?
@@ -132,13 +186,13 @@ function AddChangeMovie() {
                 </div>
                 <div className={classes.formGroup}>
                     <label className={classes.formGroup_label} htmlFor="category" >Вибери категорії:</label>
-                    <select className={classes.formGroup_select} id="category" value={''} onChange={e=>{setMovie(movie=>({...movie,category:[...new Set([...movie.category, e.target.value])]}));setErrorFields(val=>({...val,category:''}))}}>
+                    <select className={classes.formGroup_select} id="category" value={''} disabled={loaderCategory} onChange={e=>{setMovie(movie=>({...movie,category:[...new Set([...movie.category, e.target.value])]}));setErrorFields(val=>({...val,category:''}))}}>
                         <option value="" disabled>Вибери категорії</option>
-                        {categories.map((val)=><option className={classes.formGroup_option} key={val.id} value={val.id}>{val.category}</option>)}
+                        {categories.map((val)=><option className={classes.formGroup_option} key={val.id} value={val.id}>{val.name}</option>)}
                     </select>
                     {!!movie.category.length&&<div className={classes.categoryBoard}>
                         {movie.category.map(val=><div key={val} className={classes.categoryBoard_item}>
-                                <div className={classes.categoryBoard_title}>{categories.find(cat=>cat.id==val).category}</div>
+                                <div className={classes.categoryBoard_title}>{categories.find(cat=>cat.id==val)?.name}</div>
                                 <button className={classes.categoryBoard_button} onClick={()=>setMovie(movie=>({...movie,category:movie.category.filter(fil=>fil!=val)}))}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 753.23 753.23">
                                         <path fill="#000" d="M635.538,94.154h-141.23V47.077C494.308,21.067,473.24,0,447.23,0H306c-26.01,0-47.077,21.067-47.077,47.077v47.077
@@ -159,8 +213,9 @@ function AddChangeMovie() {
                     }
                     {errorFields.type && <p className={classes.formGroup_error}>{errorFields.type}</p>}
                 </div>
+                {loaderLoad&& <div className={classes.AddChangeMovie_loader}><Loader/></div>}
                 <div className={classes.formGroupActive}>
-                    <button className={classes.formGroupActive_button}>{id?'Змінити':'Створити'}</button>
+                    <button className={classes.formGroupActive_button} onClick={isValid}>{id!=undefined?'Змінити':'Створити'}</button>
                     <Link className={classes.formGroupActive_button} to='/adminPanel'>Назад</Link>
                 </div>
             </form>
