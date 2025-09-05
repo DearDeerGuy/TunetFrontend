@@ -79,7 +79,7 @@ function AddChangeMovie() {
         if (!movie.category || movie.category.length === 0) { errorFront++; setErrorFields(v => ({ ...v, category: "Ви повинні вибрати хоча б одну категорію" })); }
         if(errorFront==0){
             fetchingLoad();
-        }
+        }         
     }
 
     const handleFileChange = (e) => {

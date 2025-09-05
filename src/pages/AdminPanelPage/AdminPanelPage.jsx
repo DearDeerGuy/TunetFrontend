@@ -6,11 +6,11 @@ import { deleteMovie, getMovieList } from '../../API/film';
 import Loader from '../../components/UI/Loader/Loader';
 import { activateImageULR, testSleep } from '../../Utils/utils';
 import { useSelector } from 'react-redux';
-import { addFailFilm, addFailSerial, deleteFailFilm, deleteFailSerial, getFileById, updateFailFilm, updateFailSerial } from '../../API/fails';
+import { addFailFilm, addFailSerial, deleteFail, getFileById, updateFailFilm, updateFailSerial } from '../../API/fails';
 import FilmItem from '../../components/UI/FilmItem/FilmItem';
 
 function AdminPanelPage() {
-    const initialFail = {film:{link:null},serial:[]}
+    const initialFail = {film:{link:null,id:null},serial:[]}
     const initialSelect = {season_number:0,episode_number:0}
     const navigate = useNavigate();
     const user = useSelector(state => state.User)
@@ -18,7 +18,7 @@ function AdminPanelPage() {
     const [selectFilm, setSelectFilm]=useState(null);
     const [filmList, setFilmList] = useState([]);
     const [selected, setSelected] = useState(initialSelect)
-    const [serialLink,setSerialLink] = useState(null);
+    const [serialItem,setSerialItem] = useState({link:null,id:null});
     const [fetchingMovie,loaderMovie,errorMovie] = useFetching(async()=>{
         const res = await getMovieList({per_page:5});
         setFilmList(res.data)
@@ -30,24 +30,25 @@ function AdminPanelPage() {
     const [fetchingFailFilm,loaderFailFilm,errorFailFilm] = useFetching(async () => {
         const res = await getFileById(selectFilm.id,user.token);
         if(selectFilm.type=='film'){
-            setFailFilm(val=>({...val,film:{...val.film,link:res.link}}))
+            setFailFilm(val=>({...val,film:{...val.film,link:res.link,id:res.id}}))
         }else{
             setFailFilm(val=>({...val,serial:res}))
             setSelected(initialSelect);
         }
     },false)
-    const [fetchingPushFile,loaderPushFile,errorPushFile] = useFetching(async (file) => {
+    const [fetchingPushFile,loaderPushFile,errorPushFile] = useFetching(async ({file,id}) => {
+        console.log(id)
         if(selectFilm.type=='film'){
-            if(failFilm.film?.link){
-                await updateFailFilm(selectFilm.id,{file},user.token);
+            if(id){
+                await updateFailFilm(selectFilm.id,{file,id},user.token);
             }else{
                 await addFailFilm(selectFilm.id,{file},user.token);
             }
         }else{
             const serialPack = getSerialPack(selected.season_number,selected.episode_number,file);
             if(serialPack.season_number>0&&serialPack.episode_number>0){
-                if(serialPack.link){
-                    await updateFailSerial(selectFilm.id,serialPack,user.token);
+                if(id){
+                    await updateFailSerial(selectFilm.id,{...serialPack,id:id},user.token);
                 }else{
                     await addFailSerial(selectFilm.id,serialPack,user.token);
                 }
@@ -55,16 +56,12 @@ function AdminPanelPage() {
         }
         fetchingFailFilm();
     },false)
-    const [fetchingDeleteFile,loaderDeleteFile,errorDeleteFile] = useFetching(async () => {
-        if(selectFilm.type=='film'){
-            await deleteFailFilm(selectFilm.id,user.token)
-        }else{
-            const serialPack = getSerialPack(selected.season_number,selected.episode_number);
-            if(serialPack.season_number>0&&serialPack.episode_number>0){
-                await deleteFailSerial(selectFilm.id,serialPack,user.token)
-            }
+    const [fetchingDeleteFile,loaderDeleteFile,errorDeleteFile] = useFetching(async ({id}) => {
+        console.log(id)
+        if(id){
+            await deleteFail(id,user.token)
+            fetchingFailFilm();
         }
-        fetchingFailFilm();
     },false)
 
     function getSerialPack(season_number,episode_number,file=null){
@@ -98,7 +95,7 @@ function AdminPanelPage() {
             file
         };
     }
-    function handleVideo(event) {
+    function handleVideo(event,id) {
         const file = event.target.files[0];
         if (!file) return;
         if (!file.type.startsWith("video/")) {
@@ -112,7 +109,7 @@ function AdminPanelPage() {
             event.target.value = "";
             return;
         }
-        fetchingPushFile(file)
+        fetchingPushFile({file,id})
     }
     function searchMovie() {
         setSelectFilm(null);
@@ -128,7 +125,8 @@ function AdminPanelPage() {
         }
     },[selectFilm])
     useEffect(()=>{
-        setSerialLink(failFilm.serial.find(val=>(val.season_number==selected.season_number&&val.episode_number==selected.episode_number))?.link)
+        let filmItem = failFilm.serial.find(val=>(val.season_number==selected.season_number&&val.episode_number==selected.episode_number));
+        setSerialItem({link:filmItem?.link,id:filmItem?.id})
     },[selected])
 
     return (
@@ -162,10 +160,10 @@ function AdminPanelPage() {
                                 {loaderPushFile&&<div className={classes.adminController_loader}><Loader/></div>}
                                 <div className={classes.adminController_action}>
                                     {failFilm.film?.link?<>
-                                        <label className={[classes.adminController_button,loaderPushFile || loaderDeleteFile ? classes.disabled : ''].join(' ')} htmlFor="updateFilm">Оновити файл<input style={{display:'none'}} type="file" accept="video/*" id='updateFilm' disabled={(loaderPushFile||loaderDeleteFile)} onChange={handleVideo}/></label>
-                                        <button className={[classes.adminController_button,loaderPushFile || loaderDeleteFile ? classes.disabled : ''].join(' ')} disabled={(loaderPushFile||loaderDeleteFile)} onClick={fetchingDeleteFile}>Видалети файл</button>
+                                        <label className={[classes.adminController_button,loaderPushFile || loaderDeleteFile ? classes.disabled : ''].join(' ')} htmlFor="updateFilm">Оновити файл<input style={{display:'none'}} type="file" accept="video/*" id='updateFilm' disabled={(loaderPushFile||loaderDeleteFile)} onChange={(e)=>handleVideo(e,failFilm.film?.id)}/></label>
+                                        <button className={[classes.adminController_button,loaderPushFile || loaderDeleteFile ? classes.disabled : ''].join(' ')} disabled={(loaderPushFile||loaderDeleteFile)} onClick={()=>fetchingDeleteFile({id:failFilm.film?.id})}>Видалити файл</button>
                                     </>
-                                    :<label className={[classes.adminController_button,loaderPushFile || loaderDeleteFile ? classes.disabled : ''].join(' ')} htmlFor="addFilm">Додати файл<input style={{display:'none'}} type="file" accept="video/*" id='addFilm' disabled={(loaderPushFile||loaderDeleteFile)} onChange={handleVideo}/></label>}
+                                    :<label className={[classes.adminController_button,loaderPushFile || loaderDeleteFile ? classes.disabled : ''].join(' ')} htmlFor="addFilm">Додати файл<input style={{display:'none'}} type="file" accept="video/*" id='addFilm' disabled={(loaderPushFile||loaderDeleteFile)} onChange={(e)=>handleVideo(e,failFilm.film?.id)}/></label>}
                                 </div>
                             </div>
                         </div>:<div className={classes.adminController}>
@@ -193,14 +191,14 @@ function AdminPanelPage() {
                                 </select>
                             </div>
                             {(selected.season_number!=0&&selected.episode_number!=0)&&<div className={classes.adminController_body}>
-                                    <div className={classes.adminController_info}>{serialLink?`Файл: ${serialLink}`:'Файл не завантажений'}</div>
+                                    <div className={classes.adminController_info}>{serialItem.link?`Файл: ${serialItem.link}`:'Файл не завантажений'}</div>
                                     {loaderPushFile&&<div className={classes.adminController_loader}><Loader/></div>}
                                     <div className={classes.adminController_action}>
-                                        {serialLink?<>
-                                            <label className={[classes.adminController_button,loaderPushFile || loaderDeleteFile ? classes.disabled : ''].join(' ')} htmlFor="updateSerial">Оновити файл<input style={{display:'none'}} type="file" accept="video/*" id='updateSerial' disabled={(loaderPushFile||loaderDeleteFile)} onChange={handleVideo}/></label>
-                                            <button className={[classes.adminController_button,loaderPushFile || loaderDeleteFile ? classes.disabled : ''].join(' ')} disabled={(loaderPushFile||loaderDeleteFile)} onClick={fetchingDeleteFile}>Видалети файл</button>
+                                        {serialItem.link?<>
+                                            <label className={[classes.adminController_button,loaderPushFile || loaderDeleteFile ? classes.disabled : ''].join(' ')} htmlFor="updateSerial">Оновити файл<input style={{display:'none'}} type="file" accept="video/*" id='updateSerial' disabled={(loaderPushFile||loaderDeleteFile)} onChange={(e)=>handleVideo(e,serialItem.id)}/></label>
+                                            <button className={[classes.adminController_button,loaderPushFile || loaderDeleteFile ? classes.disabled : ''].join(' ')} disabled={(loaderPushFile||loaderDeleteFile)} onClick={()=>fetchingDeleteFile({id:serialItem.id})}>Видалити файл</button>
                                         </>
-                                        :<label className={[classes.adminController_button,loaderPushFile || loaderDeleteFile ? classes.disabled : ''].join(' ')} htmlFor="addSerial">Додати файл<input style={{display:'none'}} type="file" accept="video/*" id='addSerial' disabled={(loaderPushFile||loaderDeleteFile)} onChange={handleVideo}/></label>}
+                                        :<label className={[classes.adminController_button,loaderPushFile || loaderDeleteFile ? classes.disabled : ''].join(' ')} htmlFor="addSerial">Додати файл<input style={{display:'none'}} type="file" accept="video/*" id='addSerial' disabled={(loaderPushFile||loaderDeleteFile)} onChange={(e)=>handleVideo(e,serialItem.id)}/></label>}
                                     </div>
                                 </div>
                             }
