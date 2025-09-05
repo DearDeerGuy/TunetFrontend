@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router';
 import useFetching from '../../hooks/useFetching';
 import { deleteMovie, getMovieList } from '../../API/film';
 import Loader from '../../components/UI/Loader/Loader';
-import { activateImageULR } from '../../Utils/utils';
+import { activateImageULR, testSleep } from '../../Utils/utils';
 import { useSelector } from 'react-redux';
-import { addFailFilm, addFailSerial, getFileById, updateFailFilm, updateFailSerial } from '../../API/fails';
+import { addFailFilm, addFailSerial, deleteFailFilm, deleteFailSerial, getFileById, updateFailFilm, updateFailSerial } from '../../API/fails';
+import FilmItem from '../../components/UI/FilmItem/FilmItem';
 
 function AdminPanelPage() {
     const initialFail = {film:{link:null},serial:[]}
@@ -44,16 +45,29 @@ function AdminPanelPage() {
             }
         }else{
             const serialPack = getSerialPack(selected.season_number,selected.episode_number,file);
-            if(serialPack.link){
-                await updateFailSerial(selectFilm.id,serialPack,user.token);
-            }else{
-                await addFailSerial(selectFilm.id,serialPack,user.token);
+            if(serialPack.season_number>0&&serialPack.episode_number>0){
+                if(serialPack.link){
+                    await updateFailSerial(selectFilm.id,serialPack,user.token);
+                }else{
+                    await addFailSerial(selectFilm.id,serialPack,user.token);
+                }
             }
         }
         fetchingFailFilm();
-    })
+    },false)
+    const [fetchingDeleteFile,loaderDeleteFile,errorDeleteFile] = useFetching(async () => {
+        if(selectFilm.type=='film'){
+            await deleteFailFilm(selectFilm.id,user.token)
+        }else{
+            const serialPack = getSerialPack(selected.season_number,selected.episode_number);
+            if(serialPack.season_number>0&&serialPack.episode_number>0){
+                await deleteFailSerial(selectFilm.id,serialPack,user.token)
+            }
+        }
+        fetchingFailFilm();
+    },false)
 
-    function getSerialPack(season_number,episode_number,file){
+    function getSerialPack(season_number,episode_number,file=null){
         const serial = failFilm.serial;
         season_number=Number.parseInt(season_number);
         episode_number=Number.parseInt(episode_number);
@@ -84,7 +98,6 @@ function AdminPanelPage() {
             file
         };
     }
-
     function handleVideo(event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -100,6 +113,10 @@ function AdminPanelPage() {
             return;
         }
         fetchingPushFile(file)
+    }
+    function searchMovie() {
+        setSelectFilm(null);
+        fetchingMovie();
     }
 
     useEffect(()=>{
@@ -126,7 +143,7 @@ function AdminPanelPage() {
                 <div className={classes.adminPanel_body}>
                     <div className={classes.adminPanel_search}>
                         <input className={classes.adminPanel_searchInput} type="text" />
-                        <button className={classes.adminPanel_searchButton}>
+                        <button className={classes.adminPanel_searchButton} onClick={searchMovie}>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="30" height="30">
                                 <path fill="#000" d="M27.414,24.586l-5.077-5.077C23.386,17.928,24,16.035,24,14c0-5.514-4.486-10-10-10S4,8.486,4,14  s4.486,10,10,10c2.035,0,3.928-0.614,5.509-1.663l5.077,5.077c0.78,0.781,2.048,0.781,2.828,0  C28.195,26.633,28.195,25.367,27.414,24.586z M7,14c0-3.86,3.14-7,7-7s7,3.14,7,7s-3.14,7-7,7S7,17.86,7,14z" id="XMLID_223_"/>
                             </svg>
@@ -135,22 +152,20 @@ function AdminPanelPage() {
                     <div className={classes.adminPanel_films}>
                         {loaderMovie?
                             <div className={classes.adminPanel_filmsLoader}><Loader/></div>:
-                            filmList.map(val=><div key={val.id} className={[classes.filmItem,selectFilm != null&&selectFilm.id === val.id?classes.filmItemActive:''].join(' ')} onClick={()=>{setSelectFilm(sel=>sel?.id===val.id?null:val)}}>
-                                <img className={classes.filmItem_img} src={activateImageULR(val.poster)} alt="" />
-                                <div className={classes.filmItem_title}>{val.title}</div>
-                            </div>)
+                            filmList.map(val=><FilmItem key={val.id} info={{poster:activateImageULR(val.poster),title:val.title}} newClassName={[selectFilm!=null&&selectFilm.id===val.id?classes.filmItemActive:'']} onClickFunction={()=>{setSelectFilm(sel=>sel?.id===val.id?null:val)}} />)
                         }
                     </div>
                     <div className={classes.adminPanel_controller}>
                         {selectFilm!==null&&(loaderFailFilm?<div className={classes.adminController_loader}><Loader/></div>:(selectFilm.type=='film'? <div className={classes.adminController}>
                             <div className={classes.adminController_body}>
                                 <div className={classes.adminController_info}>{failFilm.film?.link?`Файл: ${failFilm.film.link}`:'Файл не завантажений'}</div>
+                                {loaderPushFile&&<div className={classes.adminController_loader}><Loader/></div>}
                                 <div className={classes.adminController_action}>
                                     {failFilm.film?.link?<>
-                                        <label className={classes.adminController_button} htmlFor="updateFilm">Оновити файл<input style={{display:'none'}} type="file" accept="video/*" id='updateFilm' onChange={handleVideo}/></label>
-                                        <button className={classes.adminController_button}>Видалети файл</button>
+                                        <label className={[classes.adminController_button,loaderPushFile || loaderDeleteFile ? classes.disabled : ''].join(' ')} htmlFor="updateFilm">Оновити файл<input style={{display:'none'}} type="file" accept="video/*" id='updateFilm' disabled={(loaderPushFile||loaderDeleteFile)} onChange={handleVideo}/></label>
+                                        <button className={[classes.adminController_button,loaderPushFile || loaderDeleteFile ? classes.disabled : ''].join(' ')} disabled={(loaderPushFile||loaderDeleteFile)} onClick={fetchingDeleteFile}>Видалети файл</button>
                                     </>
-                                    :<label className={classes.adminController_button} htmlFor="addFilm">Додати файл<input style={{display:'none'}} type="file" accept="video/*" id='addFilm' onChange={handleVideo}/></label>}
+                                    :<label className={[classes.adminController_button,loaderPushFile || loaderDeleteFile ? classes.disabled : ''].join(' ')} htmlFor="addFilm">Додати файл<input style={{display:'none'}} type="file" accept="video/*" id='addFilm' disabled={(loaderPushFile||loaderDeleteFile)} onChange={handleVideo}/></label>}
                                 </div>
                             </div>
                         </div>:<div className={classes.adminController}>
@@ -179,17 +194,28 @@ function AdminPanelPage() {
                             </div>
                             {(selected.season_number!=0&&selected.episode_number!=0)&&<div className={classes.adminController_body}>
                                     <div className={classes.adminController_info}>{serialLink?`Файл: ${serialLink}`:'Файл не завантажений'}</div>
+                                    {loaderPushFile&&<div className={classes.adminController_loader}><Loader/></div>}
                                     <div className={classes.adminController_action}>
                                         {serialLink?<>
-                                            <label className={classes.adminController_button} htmlFor="updateSerial">Оновити файл<input style={{display:'none'}} type="file" accept="video/*" id='updateSerial' onChange={handleVideo}/></label>
-                                            <button className={classes.adminController_button}>Видалети файл</button>
+                                            <label className={[classes.adminController_button,loaderPushFile || loaderDeleteFile ? classes.disabled : ''].join(' ')} htmlFor="updateSerial">Оновити файл<input style={{display:'none'}} type="file" accept="video/*" id='updateSerial' disabled={(loaderPushFile||loaderDeleteFile)} onChange={handleVideo}/></label>
+                                            <button className={[classes.adminController_button,loaderPushFile || loaderDeleteFile ? classes.disabled : ''].join(' ')} disabled={(loaderPushFile||loaderDeleteFile)} onClick={fetchingDeleteFile}>Видалети файл</button>
                                         </>
-                                        :<label className={classes.adminController_button} htmlFor="addSerial">Додати файл<input style={{display:'none'}} type="file" accept="video/*" id='addSerial' onChange={handleVideo}/></label>}
+                                        :<label className={[classes.adminController_button,loaderPushFile || loaderDeleteFile ? classes.disabled : ''].join(' ')} htmlFor="addSerial">Додати файл<input style={{display:'none'}} type="file" accept="video/*" id='addSerial' disabled={(loaderPushFile||loaderDeleteFile)} onChange={handleVideo}/></label>}
                                     </div>
                                 </div>
                             }
                         </div>
                         ))}
+                        {selectFilm!==null&&<div className={classes.adminPanel_filmInfo}>
+                            <div className={classes.adminPanel_filmInfoText}>Назва: {selectFilm.title}</div>
+                            <div className={classes.adminPanel_filmInfoText}>Опис: {selectFilm.description}</div>
+                            <div className={classes.adminPanel_filmInfoText}>Дата виходу: {new Date(selectFilm.release_date).toLocaleDateString()}</div>
+                            <div className={classes.adminPanel_filmInfoText}>Тип: {selectFilm.type}</div>
+                            <div className={classes.adminPanel_filmInfoText}>Актори: {selectFilm.actors}</div>
+                            <div className={classes.adminPanel_filmInfoText}>Продюсер: {selectFilm.producer}</div>
+                            <div className={classes.adminPanel_filmInfoText}>Краина: {selectFilm.country}</div>
+                            <div className={classes.adminPanel_filmInfoText}>Категорії: {selectFilm.categories.map(val=>val.name).join(', ')}</div>
+                        </div>}
                     </div>
                 </div>
             </form>

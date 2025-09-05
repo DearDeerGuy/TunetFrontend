@@ -11,3 +11,7 @@ export const activateImageULR = (url) => {
         return `http://localhost/${dopPatch}/${url}`;
     }
 }
+
+export const testSleep = (ms) => {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}

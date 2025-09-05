@@ -85,45 +85,15 @@
   gap: 20px;
 }
 
-.filmItem {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 240px;
-  cursor: pointer;
-  background-color: #00000080;
-}
-
 .filmItemActive{
   box-shadow: 0px 0px 5px 2px #F20A0A;
 }
 
-.filmItem_img {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-}
-
-.filmItem_title {
-  padding: 5px;
-  font-size: 16px;
-  font-weight: 600;
-  text-align: center;
-  color: currentColor;
-  white-space: nowrap;
-  overflow-x: auto;
-  width: 100%;
-  scrollbar-width: none;
-  -ms-overflow-style: none; 
-}
-.filmItem_title::-webkit-scrollbar {
-  display: none;
-}
-
 .adminPanel_controller{
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  gap: 20px;
   width: 100%;
   height: 100%;
 }
@@ -154,15 +124,17 @@
   display: flex;
   gap: 12px;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .adminController_select {
-  flex: 1;
+  flex: 1 1 150px;
+  min-width: 120px;
   padding: 8px 12px;
   border: 1px solid #444;
   background: #2a2a2a;
   color: #fff;
-  font-size: 14px;
+  font-size: 20px;
   outline: none;
   cursor: pointer;
 }
@@ -174,7 +146,7 @@
 }
 
 .adminController_info {
-  font-size: 14px;
+  font-size: 20px;
   padding: 10px;
   background: #2a2a2a;
   border-radius: 8px;
@@ -184,6 +156,7 @@
 
 .adminController_action {
   display: flex;
+  justify-content: center;
   gap: 12px;
   flex-wrap: wrap;
 }
@@ -192,18 +165,70 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: nowrap;
+  flex: 1;
   padding: 10px 16px;
   border: none;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 20px;
   font-weight: 500;
   cursor: pointer;
-  color: #fff;
-  background-color: #007acc;
+  border: 2px solid #fff;
+  color: #000;
+  background-color: #fff;
+  white-space: nowrap;
+}
+
+.adminController_button:disabled,.disabled {
+  opacity: 0.7;
 }
 
 .adminController_input {
   display: none;
+}
+
+.adminPanel_filmInfo{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 600px;
+  width: 100%;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #F20A0A;
+  font-size: 20px;
+  overflow: hidden;
+}
+
+.adminPanel_filmInfoText {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+@media (max-width:1500px){
+  .adminPanel_controller{
+    flex-direction: column;
+  }
+}
+
+@media (max-width:1023px){
+  .adminPanel_form{
+    flex-direction: column;
+  }
+  .adminPanel_action{
+    max-width: 1000px;
+  }
+}
+
+@media (max-width:767px){
+  .adminPanel{
+    padding-bottom: 150px;
+  }
+}
+
+@media (max-width:424px){
+
 }
 
 @media (hover: hover){
@@ -218,7 +243,8 @@
   .adminController_select:hover {
     border-color: #666;
   }
-  .adminController_button:hover {
-    background: #005791;
+  .adminController_button:not(.disabled):hover{
+    border-color: #F20A0A;
+    background-color: #e7e7e7;
   }
 }
