@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import classes from './FilmItem.module.css'
 
-function FilmItem({info:{poster,title},newClassName,onClickFunction}) {
+function FilmItem({info:{poster,title},newClassName=[],onClickFunction}) {
     const titleRef = useRef(null);
     const [scroll, setScroll] = useState({interval:null,scroll:0})
     const startScroll = () => {

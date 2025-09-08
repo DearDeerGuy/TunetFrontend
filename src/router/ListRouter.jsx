@@ -8,6 +8,7 @@ import PersonalPage from "../pages/PersonalPage/PersonalPage.jsx";
 import TariffPage from "../pages/TariffPage/TariffPage.jsx";
 import AdminPanelPage from "../pages/AdminPanelPage/AdminPanelPage.jsx";
 import AddChangeMovie from "../pages/AddChangeMovie/AddChangeMovie.jsx";
+import GalleryPage from "../pages/GalleryPage/GalleryPage.jsx";
 
 export const ListUser = [
     {id:0,path:"*",element:<Navigate to={"/main"} replace />},
@@ -25,4 +26,5 @@ export const ListAuthorizedUser = [
     {id:4,path:"/adminPanel",element:<Form><AdminPanelPage/></Form>},
     {id:5,path:"/addMovie",element:<Form><AddChangeMovie/></Form>},
     {id:6,path:"/changeMovie/:id",element:<Form><AddChangeMovie/></Form>},
+    {id:7,path:"/gallery",element:<Form><GalleryPage/></Form>},
 ]

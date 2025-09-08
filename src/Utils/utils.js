@@ -1,4 +1,6 @@
 export const dopPatch = '/Tunet/public';
+export const types = [{id:0,type:'film',name:'Фільм'},{id:1,type:'serial',name:'Серіал'}];
+
 
 export const activateImageULR = (url) => {
     if (!url) return null;

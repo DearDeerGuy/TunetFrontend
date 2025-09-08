@@ -33,11 +33,13 @@ export const updateMovie = async(id,{posterFile,title,description,release_date,t
     return response.data;
 }
 
-export const getMovieList = async ({per_page=10,page=1}) => {
-    const formData = new FormData();
-    formData.append("per_page", per_page);
-    formData.append("page", page);
-    const response = await axios.get(`http://localhost:80${dopPatch}/api/film`,formData)
+export const getMovieList = async ({per_page=5,page=null,search=null,type=null,categories=null}) => {
+    const params = {per_page};
+    if (page) params.page = page;
+    if (search) params.search = search;
+    if (type) params.type = type;
+    if (categories) params.categories = categories;
+    const response = await axios.get(`http://localhost:80${dopPatch}/api/film`,{params})
     return response.data;
 }
 

@@ -6,10 +6,9 @@ import { getCategory } from '../../API/category';
 import { addMovie, getMovieById, updateMovie } from '../../API/film';
 import Loader from '../../components/UI/Loader/Loader';
 import { useSelector } from 'react-redux';
-import { activateImageULR } from '../../Utils/utils';
+import { activateImageULR, types } from '../../Utils/utils';
 
 function AddChangeMovie() {
-    const types = [{id:0,type:'film'},{id:1,type:'serial'}]
     const navigate = useNavigate();
     const user = useSelector(state => state.User);
     const {id} = useParams();
@@ -165,7 +164,7 @@ function AddChangeMovie() {
                     <label className={classes.formGroup_label} htmlFor="type" >Вибери тип:</label>
                     <select className={classes.formGroup_select} id="type" value={movie.type} onChange={e=>{setMovie(movie=>({...movie,type:e.target.value}));setErrorFields(val=>({...val,type:''}))}}>
                         <option value="" disabled>Вибери тип</option>
-                        {types.map((val)=><option className={classes.formGroup_option} key={val.id} value={val.type}>{val.type}</option>)}
+                        {types.map((val)=><option className={classes.formGroup_option} key={val.id} value={val.type}>{val.name}</option>)}
                     </select>
                     {errorFields.type && <p className={classes.formGroup_error}>{errorFields.type}</p>}
                 </div>

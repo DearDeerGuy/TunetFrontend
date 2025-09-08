@@ -14,13 +14,14 @@ function AdminPanelPage() {
     const initialSelect = {season_number:0,episode_number:0}
     const navigate = useNavigate();
     const user = useSelector(state => state.User)
+    const [search, setSearch] = useState('');
     const [failFilm, setFailFilm] = useState(initialFail);
     const [selectFilm, setSelectFilm]=useState(null);
     const [filmList, setFilmList] = useState([]);
     const [selected, setSelected] = useState(initialSelect)
     const [serialItem,setSerialItem] = useState({link:null,id:null});
     const [fetchingMovie,loaderMovie,errorMovie] = useFetching(async()=>{
-        const res = await getMovieList({per_page:5});
+        const res = await getMovieList({per_page:5,page:1,search:search});
         setFilmList(res.data)
     },true)
     const [fetchingMovieDelete,loaderMovieDelete,errorMovieDelete] = useFetching(async()=>{
@@ -140,7 +141,7 @@ function AdminPanelPage() {
                 </div>
                 <div className={classes.adminPanel_body}>
                     <div className={classes.adminPanel_search}>
-                        <input className={classes.adminPanel_searchInput} type="text" />
+                        <input className={classes.adminPanel_searchInput} type="text" value={search} onChange={(e)=>setSearch(e.target.value)} />
                         <button className={classes.adminPanel_searchButton} onClick={searchMovie}>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="30" height="30">
                                 <path fill="#000" d="M27.414,24.586l-5.077-5.077C23.386,17.928,24,16.035,24,14c0-5.514-4.486-10-10-10S4,8.486,4,14  s4.486,10,10,10c2.035,0,3.928-0.614,5.509-1.663l5.077,5.077c0.78,0.781,2.048,0.781,2.828,0  C28.195,26.633,28.195,25.367,27.414,24.586z M7,14c0-3.86,3.14-7,7-7s7,3.14,7,7s-3.14,7-7,7S7,17.86,7,14z" id="XMLID_223_"/>
@@ -149,9 +150,10 @@ function AdminPanelPage() {
                     </div>
                     <div className={classes.adminPanel_films}>
                         {loaderMovie?
-                            <div className={classes.adminPanel_filmsLoader}><Loader/></div>:
-                            filmList.map(val=><FilmItem key={val.id} info={{poster:activateImageULR(val.poster),title:val.title}} newClassName={[selectFilm!=null&&selectFilm.id===val.id?classes.filmItemActive:'']} onClickFunction={()=>{setSelectFilm(sel=>sel?.id===val.id?null:val)}} />)
-                        }
+                            <div className={classes.adminPanel_filmsLoader}><Loader/></div>:(
+                            filmList.length>0?filmList.map(val=><FilmItem key={val.id} info={{poster:activateImageULR(val.poster),title:val.title}} newClassName={[selectFilm!=null&&selectFilm.id===val.id?classes.filmItemActive:'']} onClickFunction={()=>{setSelectFilm(sel=>sel?.id===val.id?null:val)}} />)
+                            :<div className={classes.adminPanel_filmsMessage}>Фільми не знайдено</div>
+                        )}
                     </div>
                     <div className={classes.adminPanel_controller}>
                         {selectFilm!==null&&(loaderFailFilm?<div className={classes.adminController_loader}><Loader/></div>:(selectFilm.type=='film'? <div className={classes.adminController}>

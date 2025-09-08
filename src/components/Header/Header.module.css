@@ -63,6 +63,9 @@
   .Header{
     padding: 20px 50px;
   }
+  .smallNone{
+    display: none;
+  }
 }
 
 @media (max-width:767px){
@@ -88,7 +91,7 @@
 
 @media (hover: hover){
   .controller_language:hover svg{
-    color:#F20A0A;
+    color:#f20a0a;
   }
   .controller_button:hover{
     background-color: #832727;
