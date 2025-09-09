@@ -7,8 +7,10 @@ import { getMovieList } from '../../API/film';
 import Loader from '../../components/UI/Loader/Loader';
 import FilmItem from '../../components/UI/FilmItem/FilmItem';
 import Pagination from '../../components/UI/Pagination/Pagination';
+import { useNavigate } from 'react-router';
 
 function GalleryPage() {
+    const navigate = useNavigate()
     const [search,setSearch] = useState({search:'',type:'',categories:''});
     const [pagination, setPagination] = useState({maxPage:1,page:1})
     const [categoryList,setCategoryList] = useState([]);
@@ -62,7 +64,7 @@ function GalleryPage() {
                 </form>
                 <div className={classes.gallery_body}>
                     {loaderFilm?<div className={classes.gallery_bodyLoader}><Loader/></div>
-                    :(filmList.length>0?filmList.map(val=><FilmItem key={val.id} info={{poster:activateImageULR(val.poster),title:val.title}} onClickFunction={()=>console.log(val.id)}/>)
+                    :(filmList.length>0?filmList.map(val=><FilmItem key={val.id} info={{poster:activateImageULR(val.poster),title:val.title}} onClickFunction={()=>navigate(`/view/${val.id}`)}/>)
                     :<div className={classes.gallery_bodyNoFilm}>Фільми не знайдено</div>
                     )}
                 </div>

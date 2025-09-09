@@ -160,14 +160,14 @@ function AddChangeMovie() {
                     <input className={classes.formGroup_input} type="date" id='releaseDate' value={movie.release_date} onChange={e=>{setMovie(movie=>({...movie,release_date:e.target.value}));setErrorFields(val=>({...val,release_date:''}))}}/>
                     {errorFields.release_date && <p className={classes.formGroup_error}>{errorFields.release_date}</p>}
                 </div>
-                <div className={classes.formGroup}>
+                {(id==undefined)&&<div className={classes.formGroup}>
                     <label className={classes.formGroup_label} htmlFor="type" >Вибери тип:</label>
                     <select className={classes.formGroup_select} id="type" value={movie.type} onChange={e=>{setMovie(movie=>({...movie,type:e.target.value}));setErrorFields(val=>({...val,type:''}))}}>
                         <option value="" disabled>Вибери тип</option>
                         {types.map((val)=><option className={classes.formGroup_option} key={val.id} value={val.type}>{val.name}</option>)}
                     </select>
                     {errorFields.type && <p className={classes.formGroup_error}>{errorFields.type}</p>}
-                </div>
+                </div>}
                 <div className={classes.formGroup}>
                     <label className={classes.formGroup_label} htmlFor="actors" >Введи акторів:</label>
                     <input className={classes.formGroup_input} type="text" id='actors' value={movie.actors} onChange={e=>{setMovie(movie=>({...movie,actors:e.target.value}));setErrorFields(val=>({...val,actors:''}))}}/>

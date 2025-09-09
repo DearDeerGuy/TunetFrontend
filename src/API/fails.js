@@ -1,7 +1,17 @@
 import axios from "axios";
 import { dopPatch } from "../Utils/utils";
 
-export const getFileById =  async (film_id,token) => {
+export const getVideoStream = async (link,token) => {
+    const response = await axios.get(`http://localhost:80${dopPatch}/api/stream/a.mp4?path=${link}`,
+        {headers: {
+            Authorization:`Bearer ${token}`,},
+            responseType: "blob",
+        }
+    );
+    return URL.createObjectURL(response.data);
+}
+
+export const getFileById = async (film_id,token) => {
     const response = await axios.get(`http://localhost:80${dopPatch}/api/file?film_id=${film_id}`,{headers: {Authorization: `Bearer ${token}`}});
     return response.data;
 }

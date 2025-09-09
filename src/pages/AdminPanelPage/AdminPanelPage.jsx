@@ -172,7 +172,16 @@ function AdminPanelPage() {
                             <div className={classes.adminController_head}>
                                 <select className={classes.adminController_select} id="seasonNumber" value={selected.season_number?selected.season_number:0} onChange={e=>{e.target.value==-1?setSelected(val=>({...val,season_number:e.target.value,episode_number:-1})):setSelected(val=>({...val,season_number:e.target.value,episode_number:0}))}}>
                                     <option value={0} disabled>Вибери сезон</option>
-                                    {[...new Set(failFilm.serial.map(val=>val.season_number))].map((val,index)=><option value={val} key={index}>{val}</option>)}
+                                    {(() => {
+                                        const seasons = failFilm.serial.map(val => val.season_number);
+                                        const maxSeason = seasons.length > 0 ? Math.max(...seasons) : 0;
+                                        const range = Array.from({ length: maxSeason }, (_, i) => i + 1);
+                                        return range.map(val => (
+                                        <option value={val} key={val}>
+                                            {val}
+                                        </option>
+                                        ));
+                                    })()}
                                     <option value={-1}>Новый сезон</option>
                                 </select>
                                 <select className={classes.adminController_select} id="episodeNumber" disabled={!selected.season_number} value={selected.episode_number?selected.episode_number:0} onChange={e=>setSelected(val=>({...val,episode_number:e.target.value}))}>
