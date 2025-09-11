@@ -8,13 +8,21 @@ import { getMovieById } from '../../API/film';
 import { getFileById, getVideoStream } from '../../API/fails';
 import { activateImageULR } from '../../Utils/utils';
 import videoDefault from '../../assets/videoError.jpg'
+import defaultAvatar from './../../assets/avatar.jpg'
+import StarLine from '../../components/UI/StarLine/StarLine';
+import { addReview, deleteReview, getReviewsList, getReviewUser, updateReview } from '../../API/reviews';
+import Pagination from '../../components/UI/Pagination/Pagination';
 
 function ViewPage() {
     const firstRender = useRef(true);
     const {id} = useParams();
     const user = useSelector(state => state.User);
     const [videoUrl, setVideoUrl] = useState(null);
+    const [myReviews,setMyReviews] = useState({id:null,comment:'',mark:0,disabled:false})
     const [seriesSelection,setSeriesSelection] = useState({season_number:1,episode_number:1,active_season:1})
+    const [pagination, setPagination] = useState({maxPage:1,page:1})
+    const [ReviewsList,setReviewsList] = useState([]);
+    const [errorReviews,setErrorReviews] = useState('');
     const [film,setFilm] = useState({})
     const [fetchingInfo,loaderInfo,errorInfo] = useFetching(async()=>{
         const newFilm = await getMovieById(id);
@@ -23,8 +31,16 @@ function ViewPage() {
         setFilm(newFilm);
         fetchingStream({type:newFilm.type,fails:newFilm.fails})
     },true);
+    const [fetchingUserReviews,loaderUserReviews,errorUserReviews] = useFetching(async()=>{
+        const res = await getReviewUser({film_id:id,user_id:user.id});
+        setMyReviews({id:res?.id,comment:res?.comment||'',mark:res?.mark||0,disabled:!!res})
+    },true)
+    const [fetchingReviewsList,loaderReviewsList,errorReviewsList] = useFetching(async(page)=>{
+        const res = await getReviewsList({film_id:id,perPage:10,page:page})
+        setPagination({maxPage:res.last_page,page:res.current_page});
+        setReviewsList(res.data);
+    },true)
     const [fetchingStream,loaderStream,errorStream] = useFetching(async({type,fails})=>{
-        console.log(1,type,fails)
         if(type=='serial'){
             let fail=fails.find(val=>(val.season_number==seriesSelection.season_number&&val.episode_number==seriesSelection.episode_number))
             if(fail){
@@ -41,6 +57,21 @@ function ViewPage() {
                 setVideoUrl(res);
             }
         }
+    },false);
+    const [fetchingAddReviews,loaderAddReviews,errorAddReviews] = useFetching(async()=>{
+        if(myReviews.id!=null&&myReviews!=undefined){
+            const res = await updateReview(myReviews.id,{mark:myReviews.mark,comment:myReviews.comment},user.token);
+            setMyReviews({id:res.id,comment:res.comment,mark:res.mark,disabled:true});
+        }else{
+            const res = await addReview({film_id:id,mark:myReviews.mark,comment:myReviews.comment},user.token);
+            setMyReviews({id:res.id,comment:res.comment,mark:res.mark,disabled:true});
+        }
+        fetchingReviewsList();
+    },false)
+    const [fetchingDeleteReviews,loaderDeleteReviews,errorDeleteReviews] = useFetching(async()=>{
+        await deleteReview(myReviews.id,user.token);
+        setMyReviews({id:null,comment:'',mark:0,disabled:false});
+        fetchingReviewsList();
     },false)
 
     const createSerialMenu = () => {
@@ -62,9 +93,22 @@ function ViewPage() {
             </>
         }
     }
+    const addInUpdateReviews = () =>{
+        if(myReviews.comment === undefined || myReviews.comment === null || myReviews.comment.trim() === ''){
+            setErrorReviews("Поле коментаря обов'язкове для заповнення");
+            return;
+        }
+        if(myReviews.mark<=0||myReviews.mark>10){
+            setErrorFields("Поле оцінки обов'язкове для заповнення");
+            return;
+        }
+        fetchingAddReviews();
+    }
 
     useEffect(() => {
         fetchingInfo();
+        fetchingReviewsList();
+        fetchingUserReviews();
     }, []);
     useEffect(() => {
         if (firstRender.current) {
@@ -104,7 +148,7 @@ function ViewPage() {
                             </div>
                         </div>
                         <div className={classes.view_grade}>
-                            10/10
+                            <StarLine value={film.rating}/>
                         </div>
                     </div>
                     <div className={classes.view_body}>
@@ -133,10 +177,51 @@ function ViewPage() {
                             </div>
                         </div>
                     </div>
-                    {/* <div>
-                        <form onSubmit={(e)=>e.preventDefault()}></form>
-                        <div></div>
-                    </div> */}
+                    <div className={classes.reviews}><div className={classes.reviews_block}>
+                        <form className={classes.reviewForm} onSubmit={(e)=>e.preventDefault()}>
+                            <div className={classes.reviewForm_imgBlock}>
+                                <img className={classes.reviewForm_img} src={user.avatar||defaultAvatar} alt="" />
+                            </div>
+                            <div className={classes.reviewForm_info}>
+                                <div className={classes.reviewForm_head}>
+                                    <div className={classes.reviewForm_name}>{user.name}</div>
+                                    <select className={classes.reviewForm_select} value={myReviews.mark} disabled={myReviews.disabled||loaderUserReviews} onChange={(e)=>setMyReviews(val=>({...val,mark:e.target.value}))}>
+                                        <option value={0} disabled>Вибери оцінку</option>
+                                        {Array.from({ length: 10 }, (_, i) => (
+                                            <option key={i+1} value={i+1}>{i+1}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <textarea className={classes.reviewForm_body} disabled={myReviews.disabled||loaderUserReviews} rows={3} value={myReviews.comment} onChange={(e)=>setMyReviews(val=>({...val,comment:e.target.value}))}></textarea>
+                                <div className={classes.reviewForm_active}>
+                                    {myReviews.disabled?<>
+                                    <button className={classes.reviewForm_button} onClick={()=>setMyReviews(val=>({...val,disabled:false}))}>Змінити</button>
+                                    <button className={classes.reviewForm_button} onClick={()=>fetchingDeleteReviews()}>Видалити</button>
+                                    </>:<button className={classes.reviewForm_button} onClick={()=>addInUpdateReviews()}>Зберегти</button>}
+                                </div>
+                                {errorReviews&&<div className={classes.reviewForm_error}>{errorReviews}</div>}
+                            </div>
+                        </form>
+                        {loaderReviewsList?<div className={classes.reviews_Loader}><Loader/></div>:<div className={classes.reviews_body}>
+                            <div className={classes.reviews_board}>
+                                {ReviewsList.map(val=> <div className={classes.reviewItem} key={val.id}>
+                                    <div className={classes.reviewItem_imgBlock}><img className={classes.reviewItem_img} src={defaultAvatar} alt=""/></div>
+                                    <div className={classes.reviewItem_info}>
+                                        <div className={classes.reviewItem_head}>
+                                            <div className={classes.reviewItem_name}>name</div>
+                                            <div className={classes.reviewItem_star}><StarLine value={val.mark}/></div>
+                                        </div>
+                                        <div className={classes.reviewItem_body}>
+                                            {val.comment}
+                                        </div>
+                                    </div>
+                                </div>)}
+                            </div>
+                            <div className={classes.reviews_pagination}>
+                                {pagination.maxPage>1&&<Pagination maxPage={pagination.maxPage} page={pagination.page} setPage={(e)=>fetchingReviewsList(e)}/>}
+                            </div>
+                        </div>}
+                    </div></div>
                 </>}
             </div>
         </div>

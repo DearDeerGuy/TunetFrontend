@@ -6,7 +6,7 @@ import { deleteMovie, getMovieList } from '../../API/film';
 import Loader from '../../components/UI/Loader/Loader';
 import { activateImageULR, testSleep } from '../../Utils/utils';
 import { useSelector } from 'react-redux';
-import { addFailFilm, addFailSerial, deleteFail, getFileById, updateFailFilm, updateFailSerial } from '../../API/fails';
+import { addFail, deleteFail, getFileById, updateFail } from '../../API/fails';
 import FilmItem from '../../components/UI/FilmItem/FilmItem';
 
 function AdminPanelPage() {
@@ -38,27 +38,25 @@ function AdminPanelPage() {
         }
     },false)
     const [fetchingPushFile,loaderPushFile,errorPushFile] = useFetching(async ({file,id}) => {
-        console.log(id)
         if(selectFilm.type=='film'){
             if(id){
-                await updateFailFilm(selectFilm.id,{file,id},user.token);
+                await updateFail(selectFilm.id,{file,id},user.token);
             }else{
-                await addFailFilm(selectFilm.id,{file},user.token);
+                await addFail(selectFilm.id,{file},user.token);
             }
         }else{
             const serialPack = getSerialPack(selected.season_number,selected.episode_number,file);
             if(serialPack.season_number>0&&serialPack.episode_number>0){
                 if(id){
-                    await updateFailSerial(selectFilm.id,{...serialPack,id:id},user.token);
+                    await updateFail(selectFilm.id,{...serialPack,id:id},user.token);
                 }else{
-                    await addFailSerial(selectFilm.id,serialPack,user.token);
+                    await addFail(selectFilm.id,serialPack,user.token);
                 }
             }
         }
         fetchingFailFilm();
     },false)
     const [fetchingDeleteFile,loaderDeleteFile,errorDeleteFile] = useFetching(async ({id}) => {
-        console.log(id)
         if(id){
             await deleteFail(id,user.token)
             fetchingFailFilm();

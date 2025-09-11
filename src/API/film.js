@@ -34,7 +34,7 @@ export const updateMovie = async(id,{posterFile,title,description,release_date,t
 }
 
 export const getMovieList = async ({per_page=5,page=null,search=null,type=null,categories=null}) => {
-    const params = {per_page};
+    const params = {per_page,of:'rating',ot:'desc'};
     if (page) params.page = page;
     if (search) params.search = search;
     if (type) params.type = type;
