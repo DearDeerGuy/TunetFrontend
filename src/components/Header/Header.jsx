@@ -13,7 +13,10 @@ function Header() {
                 <Link className={classes.header_logo} to="/main">
                     <img className={classes.header_logo_img} src={logo} alt="" width={180}/> 
                 </Link>
-                {user.token&&<Link className={[classes.controller_button,classes.smallNone].join(' ')} to="/gallery">Фильмы</Link>}
+                {user.token&&<>
+                    <Link className={[classes.controller_button,classes.smallNone].join(' ')} to="/gallery">Фильмы</Link>
+                    <Link className={[classes.controller_button,classes.smallNone].join(' ')} to="/favorite">Обрані</Link>
+                </>}
             </div>
             <div className={classes.controller_block}>
                 {

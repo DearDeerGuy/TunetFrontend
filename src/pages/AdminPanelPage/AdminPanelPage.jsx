@@ -40,7 +40,7 @@ function AdminPanelPage() {
     const [fetchingPushFile,loaderPushFile,errorPushFile] = useFetching(async ({file,id}) => {
         if(selectFilm.type=='film'){
             if(id){
-                await updateFail(selectFilm.id,{file,id},user.token);
+                await updateFail({file,id},user.token);
             }else{
                 await addFail(selectFilm.id,{file},user.token);
             }
@@ -48,7 +48,7 @@ function AdminPanelPage() {
             const serialPack = getSerialPack(selected.season_number,selected.episode_number,file);
             if(serialPack.season_number>0&&serialPack.episode_number>0){
                 if(id){
-                    await updateFail(selectFilm.id,{...serialPack,id:id},user.token);
+                    await updateFail({...serialPack,id:id},user.token);
                 }else{
                     await addFail(selectFilm.id,serialPack,user.token);
                 }

@@ -33,7 +33,7 @@ export const addFail = async (film_id,{file,season_number,episode_number},token)
 export const updateFail = async ({file,id},token) => {
     const formData = new FormData();
     formData.append("file", file);
-    const response = await axios.post(`http://localhost:80${dopPatch}/api/file/update/${id}`,formData,{headers: {Authorization: `Bearer ${token}`}});
+    const response = await axios.post(`http://localhost:80${dopPatch}/api/file/${id}`,formData,{headers: {Authorization: `Bearer ${token}`}});
     return response.data;
 }
 

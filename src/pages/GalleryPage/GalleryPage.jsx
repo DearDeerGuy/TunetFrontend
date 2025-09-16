@@ -8,9 +8,14 @@ import Loader from '../../components/UI/Loader/Loader';
 import FilmItem from '../../components/UI/FilmItem/FilmItem';
 import Pagination from '../../components/UI/Pagination/Pagination';
 import { useNavigate } from 'react-router';
+import { useLocation } from 'react-router';
+import { getFavoriteList } from '../../API/favorite';
+import { useSelector } from 'react-redux';
 
 function GalleryPage() {
-    const navigate = useNavigate()
+    const location = useLocation();
+    const navigate = useNavigate();
+    const user = useSelector(state => state.User);
     const [search,setSearch] = useState({search:'',type:'',categories:''});
     const [pagination, setPagination] = useState({maxPage:1,page:1})
     const [categoryList,setCategoryList] = useState([]);
@@ -22,7 +27,12 @@ function GalleryPage() {
     const [fetchingFilm,loaderFilm,errorFilm] = useFetching(async(page)=>{
         // const width = window.innerWidth;
         // console.log(width);
-        const res = await getMovieList({per_page:60,page:page,search:search.search,type:search.type,categories:search.categories})
+        let res={};
+        if(location.pathname=='/favorite'){
+            res = await getFavoriteList({per_page:60,page:page,search:search.search,type:search.type,categories:search.categories},user.token)
+        }else{
+            res = await getMovieList({per_page:60,page:page,search:search.search,type:search.type,categories:search.categories})
+        }
         setPagination({maxPage:res.last_page,page:res.current_page});
         setFilmList(res.data);
     },true)

@@ -13,12 +13,12 @@ function StarLine({value}) {
     return (
         <div className={classes.star_rating}>
             <div className={classes.stars}>
-                {Array.from({ length: stars }, () => (
-                    <Star stroke="#111" strokeWidth={1} />
+                {Array.from({ length: stars }, (_, i) => (
+                    <Star key={i} className={classes.star_w} fill="#000" strokeWidth={0} />
                 ))}
             </div>
             <div className={[classes.stars, classes.rating].join(' ')}>
-                {ratingArr.map(val=>val==1?<Star fill="yellow" strokeWidth={0}/>:<StarHalf fill="yellow" strokeWidth={0}/>)}
+                {ratingArr.map((val,i)=>val==1?<Star key={i} className={classes.star_g} fill="#000" strokeWidth={0}/>:<StarHalf key={i} fill="yellow" strokeWidth={0}/>)}
             </div>
         </div>
     );

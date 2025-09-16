@@ -12,21 +12,22 @@ import defaultAvatar from './../../assets/avatar.jpg'
 import StarLine from '../../components/UI/StarLine/StarLine';
 import { addReview, deleteReview, getReviewsList, getReviewUser, updateReview } from '../../API/reviews';
 import Pagination from '../../components/UI/Pagination/Pagination';
+import { addFavorite, deleteFavorite } from '../../API/favorite';
 
 function ViewPage() {
     const firstRender = useRef(true);
     const {id} = useParams();
     const user = useSelector(state => state.User);
     const [videoUrl, setVideoUrl] = useState(null);
-    const [myReviews,setMyReviews] = useState({id:null,comment:'',mark:0,disabled:false})
-    const [seriesSelection,setSeriesSelection] = useState({season_number:1,episode_number:1,active_season:1})
-    const [pagination, setPagination] = useState({maxPage:1,page:1})
+    const [myReviews,setMyReviews] = useState({id:null,comment:'',mark:0,disabled:false});
+    const [seriesSelection,setSeriesSelection] = useState({season_number:1,episode_number:1,active_season:1});
+    const [pagination, setPagination] = useState({maxPage:1,page:1});
     const [ReviewsList,setReviewsList] = useState([]);
     const [errorReviews,setErrorReviews] = useState('');
-    const [film,setFilm] = useState({})
+    const [film,setFilm] = useState({});
     const [fetchingInfo,loaderInfo,errorInfo] = useFetching(async()=>{
-        const newFilm = await getMovieById(id);
-        newFilm.fails = await getFileById(id,user.token);
+        const newFilm = await getMovieById(id,user.token);
+        newFilm.fails = newFilm.url;
         newFilm.poster = activateImageULR(newFilm.poster);
         setFilm(newFilm);
         fetchingStream({type:newFilm.type,fails:newFilm.fails})
@@ -72,6 +73,14 @@ function ViewPage() {
         await deleteReview(myReviews.id,user.token);
         setMyReviews({id:null,comment:'',mark:0,disabled:false});
         fetchingReviewsList();
+    },false)
+    const [fetchingFavorite,loaderFavorite,errorFavorite] = useFetching(async()=>{
+        if(film.isFavorite){
+            deleteFavorite(id,user.token);
+        }else{
+            addFavorite(id,user.token)
+        }
+        setFilm(s=>({...s,isFavorite:!s.isFavorite}));
     },false)
 
     const createSerialMenu = () => {
@@ -144,7 +153,7 @@ function ViewPage() {
                                 </div>
                             </div>
                             <div className={classes.view_headActive}>
-                                <button className={classes.view_headButton}>Додати до обраного</button>
+                                <button className={classes.view_headButton} disabled={loaderFavorite} onClick={fetchingFavorite}>{film.isFavorite?`Видалити з обраного`:`Додати в обране`}</button>
                             </div>
                         </div>
                         <div className={classes.view_grade}>
@@ -205,10 +214,10 @@ function ViewPage() {
                         {loaderReviewsList?<div className={classes.reviews_Loader}><Loader/></div>:<div className={classes.reviews_body}>
                             <div className={classes.reviews_board}>
                                 {ReviewsList.map(val=> <div className={classes.reviewItem} key={val.id}>
-                                    <div className={classes.reviewItem_imgBlock}><img className={classes.reviewItem_img} src={defaultAvatar} alt=""/></div>
+                                    <div className={classes.reviewItem_imgBlock}><img className={classes.reviewItem_img} src={activateImageULR(val.user.avatar)||defaultAvatar} alt=""/></div>
                                     <div className={classes.reviewItem_info}>
                                         <div className={classes.reviewItem_head}>
-                                            <div className={classes.reviewItem_name}>name</div>
+                                            <div className={classes.reviewItem_name}>{val.user.name}</div>
                                             <div className={classes.reviewItem_star}><StarLine value={val.mark}/></div>
                                         </div>
                                         <div className={classes.reviewItem_body}>

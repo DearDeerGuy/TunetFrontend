@@ -10,7 +10,7 @@ import useFetching from "./hooks/useFetching";
 import { getUser } from "./API/user";
 import { activateImageULR } from "./Utils/utils";
 
-function App() {
+function App() { 
     const location = useLocation();
     const dispatch = useDispatch()
     const hideFooterPaths = ['/authorization','/registration','/changePassword'];

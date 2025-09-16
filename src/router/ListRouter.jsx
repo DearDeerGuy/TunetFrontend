@@ -28,5 +28,6 @@ export const ListAuthorizedUser = [
     {id:5,path:"/addMovie",element:<Form><AddChangeMovie/></Form>},
     {id:6,path:"/changeMovie/:id",element:<Form><AddChangeMovie/></Form>},
     {id:7,path:"/gallery",element:<Form><GalleryPage/></Form>},
-    {id:8,path:"/view/:id",element:<Form><ViewPage/></Form>}
+    {id:8,path:"/view/:id",element:<Form><ViewPage/></Form>},
+    {id:9,path:"/favorite",element:<Form><GalleryPage/></Form>},
 ]

@@ -43,8 +43,8 @@ export const getMovieList = async ({per_page=5,page=null,search=null,type=null,c
     return response.data;
 }
 
-export const getMovieById = async (id)=>{
-    const response = await axios.get(`http://localhost:80${dopPatch}/api/film/${id}`)
+export const getMovieById = async (id,token)=>{
+    const response = await axios.get(`http://localhost:80${dopPatch}/api/film/${id}`,{headers: {Authorization: `Bearer ${token}`}})
     return response.data;
 }
 
