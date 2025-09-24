@@ -45,3 +45,13 @@ export const getUser = async (id) =>{
     const response = await axios.post(`http://localhost:80${dopPatch}/api/user/${id}`)
     return response.data;
 }
+
+export const sendLetter = async (email) => {
+    const response = await axios.post(`http://localhost:80${dopPatch}/api/forgot-password`,{email})
+    return response.data;
+}
+
+export const restorePassword = async ({email,token,password,password_confirmation}) => {
+    const response = await axios.post(`http://localhost:80${dopPatch}/api/reset-password`,{email,token,password,password_confirmation})
+    return response.data;
+}

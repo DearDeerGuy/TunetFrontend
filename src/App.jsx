@@ -13,7 +13,7 @@ import { activateImageULR } from "./Utils/utils";
 function App() { 
     const location = useLocation();
     const dispatch = useDispatch()
-    const hideFooterPaths = ['/authorization','/registration','/changePassword'];
+    const hideFooterPaths = ['/authorization','/registration','/reset'];
     const [fetching,loader,error] = useFetching(async(parsedUser)=>{
         const res = await getUser(parsedUser.id);
         dispatch(saveUser({

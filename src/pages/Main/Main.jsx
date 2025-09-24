@@ -31,7 +31,7 @@ function Main() {
             </div>
         </section>
 
-        <section className={classes.selling}>
+        <section className={[classes.selling,classes.smallNone].join(' ')}>
             <div className={classes.selling_imageWrapper}>
                 <img className={classes.selling_img} src={baner3} alt="" />
                 <div className={classes.selling_overlay}></div>

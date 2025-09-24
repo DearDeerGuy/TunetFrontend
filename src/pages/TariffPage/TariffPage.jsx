@@ -18,7 +18,7 @@ function TariffPage() {
     const [fetchingSetTariff,loaderSetTariff,errorSetTariff] = useFetching(async (tariffId) => {
         const res = await setTariff({tariffId:tariffId,token:user.token});
         dispatch(saveUser({
-            tariffId:res.user.tariff_id,
+            tariffId:+res.user.tariff_id,
             tariffEndDate:res.user.tariff_end_date,
         }))
     },false)

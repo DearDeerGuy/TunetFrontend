@@ -17,6 +17,7 @@ function Header() {
                     <NavLink onClick={()=>setMenu(false)} className={({ isActive }) => `${classes.link_button} ${isActive ? classes.link_buttonActive : ""}`} to="/gallery">Фільми</NavLink>
                     <NavLink onClick={()=>setMenu(false)} className={({ isActive }) => `${classes.link_button} ${isActive ? classes.link_buttonActive : ""}`} to="/favorite">Обрані</NavLink>
                     <NavLink onClick={()=>setMenu(false)} className={({ isActive }) => `${classes.link_button} ${isActive ? classes.link_buttonActive : ""}`} to="/personal">Профіль</NavLink>
+                    {(user.token&&user.adminLvl===3)&&<NavLink onClick={()=>setMenu(false)} className={({ isActive }) => `${classes.link_button} ${isActive ? classes.link_buttonActive : ""}`} to="/adminPanel">Админ панель</NavLink>}
                 </div>
             </div>
             <div className={classes.headerBlock}>

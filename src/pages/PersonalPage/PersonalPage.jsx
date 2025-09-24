@@ -25,7 +25,6 @@ function PersonalPage() {
     });
     const [fetching,loader,error] = useFetching(async()=>{
         const res = await update({...newUser,token:user.token});
-        console.log(res);
         dispatch(saveUser({
             id:res.user.id,
             token:user.token,
@@ -43,7 +42,7 @@ function PersonalPage() {
         const res = await getTariffId(user.tariffId);
         setTariff(res);
     },true)
-
+    
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -74,7 +73,6 @@ function PersonalPage() {
             setErrorFields(val=>({...val,email:"Поле електронної пошти обов'язкове для заповнення"}));
             errorFront++;
         }
-
         if(errorFront==0){
             fetching();
         }
@@ -122,7 +120,7 @@ function PersonalPage() {
                     </div>
                     <div className={classes.formGroup}>
                         <label className={classes.formGroup_label} htmlFor="dateOfBirth">Твоя дата народження:</label>
-                        <input className={classes.formGroup_input} type="date" id='dateOfBirth' value={newUser.dateOfBirth} onChange={e=>{setNewUser(user=>({...user,dateOfBirth:e.target.value}));setErrorFields(val=>({...val,dateOfBirth:''}))}}/>
+                        <input className={classes.formGroup_input} type="date" id='dateOfBirth' value={newUser.dateOfBirth || ""} onChange={e=>{setNewUser(user=>({...user,dateOfBirth:e.target.value}));setErrorFields(val=>({...val,dateOfBirth:''}))}}/>
                         {errorFields.dateOfBirth && <p className={classes.formGroup_error}>{errorFields.dateOfBirth}</p>}
                     </div>
                     <button type='button' className={classes.personal_button} onClick={updateButton} disabled={loader} >Зберегти зміни</button>

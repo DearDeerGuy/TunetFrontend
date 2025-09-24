@@ -62,7 +62,7 @@ function Authorization() {
                 </div>
                 <div className={classes.loginForm_actions}>
                     <button className={classes.loginForm_button} type='button' onClick={loginButton}>ввійти</button>
-                    <Link className={classes.loginForm_link} to="/changePassword">Забули пароль</Link>
+                    <Link className={classes.loginForm_link} to="/reset">Забули пароль</Link>
                     <Link className={classes.loginForm_link} to="/registration">Реєстрація</Link>
                 </div>
             </form>

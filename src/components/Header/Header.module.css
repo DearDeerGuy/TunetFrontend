@@ -156,6 +156,9 @@
   .controller_language{
     gap: 7px;
   }
+  .controller_button{
+    padding: 5px 14px;
+  }
 }
 
 @media (hover: hover){
@@ -164,5 +167,8 @@
   }
   .controller_button:hover{
     background-color: #832727;
+  }
+  .link_button:hover{
+    text-decoration: underline;
   }
 }

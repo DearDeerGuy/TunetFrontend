@@ -4,7 +4,7 @@ import classes from './Footer.module.css';
 function Footer() {
   return (
     <div className={classes.Footer}>
-        <div><strong>Streamix</strong> - ваші улюблені фільми та серіали.</div>
+        <div className={classes.text}><strong>Streamix</strong> - ваші улюблені фільми та серіали.</div>
         <div className={classes.big_text}>© 2025</div>
         <div className={classes.link_block}>
             <a href="tel:+380639726141" className={[classes.link, classes.link_telephone].join(' ')}>
