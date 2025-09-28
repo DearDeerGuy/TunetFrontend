@@ -77,7 +77,7 @@
 .tariff_name{
   font-size: 24px;
   font-weight: 600;
-  color: #F20A0A;
+  color: var(--main-color);
 }
 
 .tariff_info{
@@ -239,11 +239,11 @@
 
 @media (hover: hover){
   .tariff_button:hover{
-    border-color: #F20A0A;
+    border-color: var(--main-color);
     background-color: #e7e7e7;
   }
   .personal_button:hover{
-    border-color: #F20A0A;
+    border-color: var(--main-color);
     background-color: #e7e7e7;
   }
 }

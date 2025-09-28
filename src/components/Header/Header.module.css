@@ -53,7 +53,7 @@
 }
 
 .controller_button {
-  background-color: #F20A0A;
+  background-color: var(--main-color);
   text-transform: uppercase;
   color: currentColor;
   font-weight: 700;

@@ -50,6 +50,7 @@
 .info {
   display: flex;
   flex-direction: column;
+  min-width: 300px;
   width: 100%;
   gap: 10px;
 }
@@ -71,9 +72,16 @@
   color: #ffffff;
 }
 
+.info_textTransform {
+  min-width: 0;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
 .view_headButton {
   padding: 10px 28px;
-  background: #F20A0A;
+  background: var(--main-color);
   font-weight: 700;
   font-size: 16px;
   color: #fff;
@@ -83,9 +91,11 @@
   min-width: max-content;
 }
 
-.view_grade {
-  font-size: 22px;
-  font-weight: bold;
+.view_starLine {
+  display: flex;
+  justify-content: center;
+  max-width: 240px;
+  width: 100%;
   color: gold;
 }
 
@@ -119,6 +129,7 @@
 
 .view_video {
   width: 100%;
+  aspect-ratio: 16 / 9;
   max-height: 420px;
   height: 100%;
   background: #000;
@@ -128,19 +139,23 @@
   color: red;
 }
 
-.view_serialMenu {
+.view_serialMenu { 
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 5px;
   padding: 10px;
+  
+  max-height: 80px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .view_serialMenuItem {
-  padding: 10px 28px;
-  background: #F20A0A;
+  padding: 5px 10px;
+  background: var(--main-color);
   font-weight: 700;
   color: #fff;
-  border: 1px solid #F20A0A;
+  border: 1px solid var(--main-color);
   font-size: 16px;
   cursor: pointer;
 }
@@ -220,17 +235,24 @@
 }
 
 .reviewForm_name {
+  flex: 1 1 auto;
+  min-width: 0;
   font-size: 20px;
   font-weight: bold;
   color: #ffffff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; 
 }
 
 .reviewForm_select {
   padding: 6px 10px;
+  width: 75px;
   background: #ffffff;
   color: #000000;
   font-size: 20px;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .reviewForm_select:disabled {
@@ -260,7 +282,7 @@
 
 .reviewForm_button {
   padding: 10px 28px;
-  background: #F20A0A;
+  background: var(--main-color);
   font-weight: 700;
   font-size: 16px;
   color: #fff;
@@ -316,13 +338,18 @@
 }
 
 .reviewItem_name {
+  flex: 1 1 auto;
   font-size: 16px;
   font-weight: 700;
   color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .reviewItem_star {
   color: gold;
+  flex-shrink: 0; 
 }
 
 .reviewItem_body {
@@ -337,7 +364,123 @@
   margin-top: 10px;
 }
 
+@media (max-width:1023px){
+  .viewPage {
+    padding: 110px 20px 150px;
+  }
+  .view_head{
+    gap: 20px;
+    padding: 60px 50px 40px 50px;
+  }
+  .view_body {
+    gap: 20px;
+    padding: 40px 50px 40px 50px;
+  }
+  .reviews {
+    gap: 30px;
+    padding: 20px 50px 40px 50px;
+  }
+  .view_info {
+    display: contents;
+  }
+  .view_head{
+    display: grid;
+    grid-template-columns: auto 1fr;
+    row-gap: 10px;
+  }
+  .info{
+    grid-column: 2;
+    grid-row: 1/4;
+    min-width: 150px;
+  }
+  .view_starLine {
+    grid-column-start: 1;
+    grid-row-start: 2;
+    min-width: 0px;
+    width: 100%;
+  }
+  .view_headActive {
+    grid-column-start: 1;
+  }
+  .view_headButton{
+    width: 100%;
+  }
+}
 
+@media (max-width:767px){
+  .viewPage {
+    padding-inline: 0px;
+  }
+  .view_head{
+    gap: 10px;
+    padding: 30px 20px 40px 20px;
+  }
+  .view_body {
+    gap: 20px;
+    padding: 20px 20px 40px 20px;
+  }
+  .reviews {
+    gap: 30px;
+    padding: 20px 20px 40px 20px;
+  }
+  .info{
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .view_imageBlock {
+    margin-inline: auto;
+    width: 137px;
+    height: 222px;
+  }
+  .view_headButton{
+    width: auto;
+    padding: 10px;
+    font-size: 16px;
+  }
+  .view_starLine{
+    max-width: none;
+    justify-content: start;
+  }
+  .view_starLine,.view_headActive{
+    grid-column: 1/3;
+  }
+}
+
+@media (max-width:500px){
+  .view_head{
+    border-bottom: 2px solid var(--main-color);
+  }
+  .view_body{
+    border-bottom: 2px solid var(--main-color);
+  }
+  .info_title {
+    font-size: 20px;
+  }
+  .info_text {
+    font-size: 14px;
+  }
+  .view_body {
+    gap: 20px;
+    padding: 20px 0px 40px 0px;
+  }
+  .view_description {
+    padding-inline: 20px;
+  }
+  .reviews {
+    padding: 0px;
+  }
+  .reviews_block{
+    border-radius: 0px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0);
+  }
+  .reviewForm_imgBlock{
+    display: none;
+  }
+  .reviewItem_imgBlock{
+    display: none;
+  }
+}
 
 @media (hover: hover){
   .view_headButton:hover {

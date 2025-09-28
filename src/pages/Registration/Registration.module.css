@@ -90,7 +90,7 @@
 
 @media (hover: hover){
   .regForm_button:hover{
-    border-color: #F20A0A;
+    border-color: var(--main-color);
     background-color: #e7e7e7;
   }
 }

@@ -35,3 +35,7 @@ button{
 svg * {
   transition-property: fill, stroke;
 }
+
+:root {
+  --main-color: #F20A0A;
+}

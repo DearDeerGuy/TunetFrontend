@@ -64,7 +64,7 @@ function AddChangeMovie() {
         }
         navigate('/adminPanel');
     },false);
-
+    
     const isValid = () => {
         let errorFront=0;
         if (movie.poster === '' && posterFile === null) { errorFront++; setErrorFields(v => ({ ...v, poster: "Ви повинні завантажити постер" })); }
@@ -185,7 +185,7 @@ function AddChangeMovie() {
                 </div>
                 <div className={classes.formGroup}>
                     <label className={classes.formGroup_label} htmlFor="category" >Вибери категорії:</label>
-                    <select className={classes.formGroup_select} id="category" value={''} disabled={loaderCategory} onChange={e=>{setMovie(movie=>({...movie,category:[...new Set([...movie.category, e.target.value])]}));setErrorFields(val=>({...val,category:''}))}}>
+                    <select className={classes.formGroup_select} id="category" value={''} disabled={loaderCategory} onChange={e=>{setMovie(movie=>({...movie,category:[...new Set([...movie.category, +e.target.value])]}));setErrorFields(val=>({...val,category:''}))}}>
                         <option value="" disabled>Вибери категорії</option>
                         {categories.map((val)=><option className={classes.formGroup_option} key={val.id} value={val.id}>{val.name}</option>)}
                     </select>

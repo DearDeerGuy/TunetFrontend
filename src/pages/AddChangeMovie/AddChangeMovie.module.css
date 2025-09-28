@@ -134,7 +134,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #F20A0A;
+  color: var(--main-color);
   transition: transform 0.2s, fill 0.2s;
 }
 
@@ -190,7 +190,7 @@
 
 @media (hover: hover){
   .formGroupActive_button:hover{
-    border-color: #F20A0A;
+    border-color: var(--main-color);
     background-color: #e7e7e7;
   }
   .categoryBoard_button:hover {

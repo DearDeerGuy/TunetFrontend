@@ -11,8 +11,10 @@ const useFetching = (callback, startLoader = true) => {
         } catch (e) {
             if (e.response?.data?.errors) {
                 setError(e.response.data.errors);
+            }else{
+                setError(e?.message)
             }
-            console.error(e);
+            //console.error(e);
         }finally{
             setLoader(false);
         }

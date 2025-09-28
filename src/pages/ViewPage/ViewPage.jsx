@@ -119,6 +119,9 @@ function ViewPage() {
         fetchingReviewsList();
         fetchingUserReviews();
     }, []);
+    useEffect(()=>{
+        setVideoUrl(null);
+    },[errorStream])
     useEffect(() => {
         if (firstRender.current) {
             firstRender.current = false;
@@ -141,22 +144,22 @@ function ViewPage() {
                                 <div className={classes.info_title}>{film.title}</div>
                                 <div className={classes.info_details}>
                                     <div className={classes.info_text}>Рік:</div>
-                                    <div className={classes.info_text}>{film.release_date}</div>
+                                    <div className={`${classes.info_text} ${classes.info_textTransform}`}>{film.release_date}</div>
                                     <div className={classes.info_text}>Жанр:</div>
-                                    <div className={classes.info_text}>{film.categories.map(val=>val.name).join(',')}</div>
+                                    <div className={`${classes.info_text} ${classes.info_textTransform}`}>{film.categories.map(val=>val.name).join(',')}</div>
                                     <div className={classes.info_text}>Країна:</div>
-                                    <div className={classes.info_text}>{film.country}</div>
+                                    <div className={`${classes.info_text} ${classes.info_textTransform}`}>{film.country}</div>
                                     <div className={classes.info_text}>Режисер:</div>
-                                    <div className={classes.info_text}>{film.producer}</div>
+                                    <div className={`${classes.info_text} ${classes.info_textTransform}`}>{film.producer}</div>
                                     <div className={classes.info_text}>Актори:</div>
-                                    <div className={classes.info_text}>{film.actors}</div>
+                                    <div className={`${classes.info_text} ${classes.info_textTransform}`}>{film.actors}</div>
                                 </div>
                             </div>
                             <div className={classes.view_headActive}>
                                 <button className={classes.view_headButton} disabled={loaderFavorite} onClick={fetchingFavorite}>{film.isFavorite?`Видалити з обраного`:`Додати в обране`}</button>
                             </div>
                         </div>
-                        <div className={classes.view_grade}>
+                        <div className={classes.view_starLine}>
                             <StarLine value={film.rating}/>
                         </div>
                     </div>
