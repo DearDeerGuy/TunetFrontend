@@ -124,7 +124,7 @@ function AddChangeMovie() {
     return (
         <div className={classes.AddChangeMovie}>
             <form className={classes.AddChangeMovie_form} onSubmit={(e)=>e.preventDefault()}>
-                <h1>{id!=undefined?'Змінити':'Створити'}</h1>
+                <h1 className={classes.AddChangeMovie_title}>{id!=undefined?'Змінити':'Створити'}</h1>
                 {loaderFilm&&<div className={classes.AddChangeMovie_loader}><Loader/></div>}
                 <div className={classes.formGroupImg} onClick={()=>{fileInputRef.current.click()}}>
                     <div className={classes.formGroup_blockImg}>

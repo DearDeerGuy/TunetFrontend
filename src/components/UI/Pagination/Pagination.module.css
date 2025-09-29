@@ -14,7 +14,7 @@
   background: #fff;
   color: #333;
   font-size: 24px;
-  font-weight: 600;
+  font-weight: 400;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -22,21 +22,21 @@
 }
 
 .pagination_buttonActive {
-  background: #f20a0a;
-  border-color: #f20a0a;
+  background: var(--main-color);
+  border-color: var(--main-color);
   color: #fff;
   cursor: default;
 }
 
 @media (hover: hover){
  .pagination_buttonActive:hover {
-    background: #f20a0a;
-    border-color: #f20a0a;
+    background: var(--main-color);
+    border-color: var(--main-color);
     color: #fff;
   }
   .pagination_button:hover {
-    border-color: #f20a0a;
+    border-color: var(--main-color);
     background: #f9f9f9;
-    color: #f20a0a;
+    color: var(--main-color);
   } 
 }

@@ -4,9 +4,16 @@
   box-sizing: border-box;
 }
 
+:root {
+  --main-color: #F20A0A;
+
+  --font-family-Impact: 'Impact', sans-serif;
+  --font-family-sfProDisplay: 'SF Pro Display', sans-serif;
+}
+
 body{
   color: #FFFFFF;
-  font-family: 'Assistant', sans-serif;
+  font-family: var(--font-family-Impact);
   overflow-x: hidden;
 }
 
@@ -34,8 +41,4 @@ button{
 }
 svg * {
   transition-property: fill, stroke;
-}
-
-:root {
-  --main-color: #F20A0A;
 }

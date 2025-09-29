@@ -1,5 +1,5 @@
 .galleryPage{
-  padding: 110px 20px 100px;
+  padding: 110px 20px 130px;
   width: 100vw;
   min-height: 100vh;
   height: 100%;
@@ -80,7 +80,7 @@
 .category_item{
   padding: 3px;
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 400;
   cursor: pointer;
 }
 

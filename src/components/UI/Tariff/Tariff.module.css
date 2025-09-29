@@ -2,6 +2,7 @@
   display: flex;
   gap: 20px;
   padding: 10px 20px;
+  font-family: var(--font-family-sfProDisplay);
   background-color: #00000080;
   border-radius: 8px;
 }
@@ -29,7 +30,7 @@
 
 .tariff_title{
   font-size: clamp(24px, 1.67vw, 32px);
-  font-weight: 700;
+  font-weight: 400;
   text-align: center;
 }
 
@@ -41,7 +42,7 @@
 .tariff_price{
   font-size: 24px;
   font-weight: 700;
-  color: red;
+  color: var(--main-color);
 }
 
 .tariff_months{
@@ -61,8 +62,9 @@
   border-radius: 12px;
   background-color: transparent;
   color: currentColor;
+  font-family: var(--font-family-Impact);
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 400;
   cursor:pointer;
 }
 

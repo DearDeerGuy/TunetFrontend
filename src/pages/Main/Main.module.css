@@ -45,12 +45,13 @@
 
 .hero_body_h1 {
   max-width: 600px;
+  font-weight: 400;
   font-size: clamp(40px, 3.33vw, 64px);
 }
 
 .hero_body_text {
   max-width: 700px;
-  font-size: 32px;
+  font-weight: 400;
   font-size: clamp(25px, 1.67vw, 32px);
 }
 
@@ -58,6 +59,7 @@
   padding: 16px;
   background-color: #0C0B0B;
   font-size: clamp(25px, 1.67vw, 32px);
+  font-family: var(--font-family-sfProDisplay);
   font-weight: 600;
   color: #FFF;
   cursor: pointer;
@@ -103,7 +105,7 @@
   padding-inline: 10px;
   max-width: 630px;
   font-size: clamp(25px, 1.67vw, 32px);
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .selling_text{
@@ -116,6 +118,7 @@
 .selling_button {
   padding: 16px;
   background-color: #0C0B0B;
+  font-family: var(--font-family-sfProDisplay);
   font-size: clamp(25px, 1.67vw, 32px);
   font-weight: 600;
   color: #FFF;
@@ -138,12 +141,14 @@
 }
 
 .section_info_title{
-  font-size: 28px;
+  font-size: 28;
+  font-family: var(--font-family-sfProDisplay);
   font-weight: 700;
 }
 
 .section_info_text{
-  font-size: 20px;
+  font-size: 20;
+  font-family: var(--font-family-sfProDisplay);
   font-weight: 400;
 }
 

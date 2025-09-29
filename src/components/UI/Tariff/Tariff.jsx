@@ -14,7 +14,7 @@ function Tariff({tariff,active=false,onClick,loader}) {
                     <div className={classes.tariff_price}>Ціна: {tariff.price} грн.</div>
                     <div className={classes.tariff_months}>Термін тарифу: {tariff.duration_months} місяців.</div>
                 </div>
-                <button className={classes.tariff_button} disabled={loader} onClick={()=>onClick()}><b>Обрати</b></button>
+                <button className={classes.tariff_button} disabled={loader} onClick={()=>onClick()}>Обрати</button>
             </div>
         </div>
     )

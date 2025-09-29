@@ -1,5 +1,5 @@
 .adminPanel{
-  padding: 110px 20px 100px;
+  padding: 110px 20px 120px;
   width: 100vw;
   min-height: 100vh;
   height: 100%;
@@ -31,6 +31,7 @@
 
 .adminPanel_actionTitle{
   text-align: center;
+  font-weight: 400;
 }
 
 .adminPanel_actionButton{
@@ -40,7 +41,8 @@
   border: 2px solid #ffffff;
   border-radius: 8px;
   background-color: #ffffff;
-  font-weight: 900;
+  font-family: var(--font-family-Impact);
+  font-weight: 400;
   font-size: 20px;
   cursor: pointer;
 }
@@ -89,6 +91,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-block: 20px;
   width: 100%;
   height: 100%;
 }
@@ -97,10 +100,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-block: 20px;
   width: 100%;
   height: 100%;
-  font-size: 24px;
-  font-weight: 900;
+  font-size: 32px;
+  font-weight: 400;
+  text-align: center;
 }
 
 .filmItemActive{
@@ -164,6 +169,7 @@
 }
 
 .adminController_info {
+  font-family: var(--font-family-sfProDisplay);
   font-size: 20px;
   padding: 10px;
   background: #2a2a2a;
@@ -188,8 +194,9 @@
   padding: 10px 16px;
   border: none;
   border-radius: 8px;
+  font-family: var(--font-family-Impact);
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 400;
   cursor: pointer;
   border: 2px solid #fff;
   color: #000;
@@ -214,6 +221,7 @@
   padding: 20px;
   border-radius: 8px;
   background-color: var(--main-color);
+  font-family: var(--font-family-sfProDisplay);
   font-size: 20px;
   overflow: hidden;
 }

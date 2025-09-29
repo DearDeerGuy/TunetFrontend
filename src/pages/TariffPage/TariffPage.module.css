@@ -23,6 +23,7 @@
 .tariffPage_title{
   text-align: center;
   text-transform: uppercase;
+  font-weight: 400;
   grid-column: 1 / -1;
 }
 

@@ -17,7 +17,13 @@
   padding: 64px 68px 81px 68px;
   max-width: 520px;
   width: 100%;
+  font-family: var(--font-family-sfProDisplay);
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+.AddChangeMovie_title{
+  font-family: var(--font-family-Impact);
+  font-weight: 400;
 }
 
 .AddChangeMovie_loader{
@@ -155,6 +161,7 @@
   border-radius: 100px;
   text-align: center;
   color: #000000;
+  font-family: var(--font-family-Impact);
   font-size: 24px;
   font-weight: 400;
   transition-duration: 0.3s;

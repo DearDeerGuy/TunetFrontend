@@ -16,12 +16,14 @@
   max-width: 520px;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+  font-family: var(--font-family-sfProDisplay);
 }
 
 .loginForm_title{
   text-align: center;
+  font-family: var(--font-family-Impact);
   font-size: 36px;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .loginForm_group{
@@ -58,8 +60,9 @@
   padding: 10px 28px;
   background-color: var(--main-color);
   color:currentColor;
+  font-family: var(--font-family-Impact);
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 400;
   text-transform: uppercase;
   cursor: pointer;
   transition-duration: 0.3s;
@@ -67,8 +70,9 @@
 
 .loginForm_link{
   padding: 5px;
+  font-family: var(--font-family-Impact);
   font-size: 24px;
-  font-weight: 300;
+  font-weight: 400;
   transition-duration: 0.3s;
 }
 

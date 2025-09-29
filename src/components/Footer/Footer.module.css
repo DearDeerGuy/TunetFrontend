@@ -5,6 +5,7 @@
   width: 100%;
   padding: 24px 100px;
   background-color: #7C787880;
+  font-family: var(--font-family-sfProDisplay);
   font-size: 16px;
   color: white;
   text-align: center;

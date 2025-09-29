@@ -5,7 +5,7 @@ import MyRouter from "./router/myRouter"
 import { useLocation } from "react-router";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { saveUser } from "./redux/slice/userSlice";
+import { clearUser, saveUser } from "./redux/slice/userSlice";
 import useFetching from "./hooks/useFetching";
 import { getUser } from "./API/user";
 import { activateImageULR } from "./Utils/utils";
@@ -40,6 +40,11 @@ function App() {
             }
         }
     },[])
+    useEffect(()=>{
+        if(error){
+            dispatch(clearUser());
+        }
+    },[error])
 
     const showFooter = !hideFooterPaths.includes(location.pathname);
     return (
